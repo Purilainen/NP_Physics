@@ -6,6 +6,10 @@
 namespace {
 	GLuint programID;
 	GLuint textureProgramID;
+	GLuint pointProgramID;
+	GLuint lineProgramID;
+	GLuint point_alpha_ID;
+	GLuint sprite_alpha_ID;
 	//GLuint vertexbuffer;
 	GLuint VertexArrayID;
 	//GLuint indexbuffer;
@@ -21,6 +25,18 @@ namespace {
 	int N_shapes;
 	TextureManager* TM;
 	Sprite *SP;
+	GLuint scale_ID;
+	GLuint size_ID;
+	GLuint line_color_ID;
+	//GLuint line_MVP_ID;
+	glm::vec3 x_axis(1.0, 0.0, 0.0);
+	glm::vec3 y_axis(0.0, 1.0, 0.0);
+	glm::vec3 z_axis(0.0, 0.0, 1.0);
+	glm::vec3 cam_pos(0, 0, 0);
+	glm::vec3 cam_up = y_axis;
+	glm::vec3 cam_right = x_axis;
+	glm::vec3 cam_front = -z_axis; //oikeakatinen koordinaatisto
+	bool keys[1024];
 };
 
 void Renderer::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -32,24 +48,23 @@ void Renderer::initDraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Tyhjennetään ruutu
 	// Koordinaatisto / Viewport
-	glm::vec3 x_axis(1.0, 0.0, 0.0);
-	glm::vec3 y_axis(0.0, 1.0, 0.0);
-	glm::vec3 z_axis(0.0, 0.0, 1.0);
+	//glm::vec3 x_axis(1.0, 0.0, 0.0);
+	//glm::vec3 y_axis(0.0, 1.0, 0.0);
+	//glm::vec3 z_axis(0.0, 0.0, 1.0);
 
-	glm::vec3 cam_pos(0, 0, 0);
-	glm::vec3 cam_up = y_axis;
-	glm::vec3 cam_right = x_axis;
-	glm::vec3 cam_front = -z_axis; //oikeakatinen koordinaatisto
-	glm::mat4 P = glm::lookAt(cam_pos, cam_pos + cam_front, cam_up);
+	//glm::vec3 cam_pos(0, 0, 0);
+	//glm::vec3 cam_up = y_axis;
+	//glm::vec3 cam_right = x_axis;
+	//glm::vec3 cam_front = -z_axis; //oikeakatinen koordinaatisto
+	//glm::mat4 P = glm::lookAt(cam_pos, cam_pos + cam_front, cam_up);
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 
-	glm::mat4 V = glm::ortho(-1.0f, 1.0f, -1.0f*height / width, 1.0f*height / width);
-	VP = V*P;
-
-	glUseProgram(programID);
-	// ---------------------------
+	//glm::mat4 V = glm::ortho(-1.0f, 1.0f, -1.0f*height / width, 1.0f*height / width);
+	//VP = V*P;
+	MVP=getMVP();
+	//glUseProgram(programID);
 }
 
 
@@ -72,13 +87,14 @@ void Renderer::initRender(GLFWwindow* w)
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 
-	TM = new TextureManager;
-	TM->loadTexture("testi", "./textures/polygon.png");
+	TM = TextureManager::getInstance();
 
 	//Ladataan shaderit
 	//valmiissa ohjelmassa bool setShaders() -funktio ajonaikaiseen shaderien vaihtoon?
 	programID = LoadShaders("shaders/VertexShader.vertexshader", "shaders/FragmentShader.fragmentshader");
 	textureProgramID = LoadShaders("shaders/TextureVertexShader.txt", "shaders/TextureFragmentShader.txt");
+	pointProgramID = LoadShaders("shaders/PointVertexShader.txt", "shaders/PointFragmentShader.txt");
+	lineProgramID = LoadShaders("shaders/LineVertexShader.txt", "shaders/LineFragmentShader.txt");
 	//----------------
 
 	//luodaan väribufferi. 
@@ -94,10 +110,18 @@ void Renderer::initRender(GLFWwindow* w)
 	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
-	//MVP näkyy shadereille
+	//uniformit
 	MVP_MatrixID = glGetUniformLocation(programID, "MVP");
+	scale_ID = glGetUniformLocation(pointProgramID, "scale");
+	size_ID = glGetUniformLocation(pointProgramID, "point_size");
+	point_alpha_ID = glGetUniformLocation(pointProgramID, "alpha");
+	sprite_alpha_ID = glGetUniformLocation(textureProgramID, "alpha");
+	line_color_ID = glGetUniformLocation(lineProgramID, "color");
+	//line_MVP_ID = glGetUniformLocation(lineProgramID, "MVP");
 
 	//glEnable(jotain)
+
+	glEnable(GL_BLEND);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 }
@@ -125,12 +149,12 @@ void Renderer::drawCircle(float x, float y, float r)
 	}
 }
 
-void Renderer::drawPie(float x, float y, float r,float a)
+void Renderer::drawPie(float x, float y, float r, float a, float start)
 {
 	float angle = 2.0*3.14159265 / 64 * a;
 	for (int i = 0; i < 64; i++)
 	{
-		drawTriangle(x, y, x + cos(angle * i)*r, y + sin(angle * i)*r, x + cos(angle * (i + 1))*r, y + sin(angle * (i + 1))*r);
+		drawTriangle(x, y, x + cos(angle * i + start)*r, y + sin(angle * i + start)*r, x + cos(angle * (i + 1) + start)*r, y + sin(angle * (i + 1) + start)*r);
 	}
 }
 
@@ -203,10 +227,13 @@ void Renderer::drawPolygonTextured(Polygon* p, const float x, const float y, std
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUniform1i(TextureID, 0);
+	glUniform1f(sprite_alpha_ID, 1);
 
 	glm::mat4 MVP_temp = MVP;
 	MVP = MVP * glm::translate(glm::vec3(x, y, 0));
 	MVP = MVP * glm::rotate(p->getRotation(), glm::vec3(0, 0, 1));
+	float scale = p->getScale();
+	MVP = MVP * glm::scale(glm::vec3(scale, scale, 1.0));
 	//MVP = MVP * glm::scale(glm::vec3(0.5f, 0.5f, 0.5f));
 
 	float width = p->getMax().x - p->getMin().x;
@@ -307,6 +334,7 @@ void Renderer::drawPolygonTextured(Polygon* p, const float x, const float y, std
 
 void Renderer::drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
 {
+	glUseProgram(programID);
 	glEnable(GL_BLEND);
 
 	GLuint vb, ib;
@@ -361,7 +389,7 @@ void Renderer::drawTriangle(float x1, float y1, float x2, float y2, float x3, fl
 	glDeleteBuffers(1, &vb);
 	glDeleteBuffers(1, &ib);
 
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 }
 
 void Renderer::drawTexturedTriangle(float x1, float y1, float x2, float y2, float x3, float y3, std::string textureName)
@@ -384,6 +412,7 @@ void Renderer::drawTexturedTriangle(float x1, float y1, float x2, float y2, floa
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUniform1i(TextureID, 0);
+	glUniform1f(sprite_alpha_ID, 1);
 
 	GLfloat* g_uv_buffer_data = new GLfloat[6];
 
@@ -466,6 +495,7 @@ void Renderer::drawTexturedRectangle(float x1, float y1, float x2, float y2, std
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(TextureID, 0);
+	glUniform1f(sprite_alpha_ID, 1);
 	//-----------------------------
 
 	GLuint uvbuffer;
@@ -539,12 +569,13 @@ void Renderer::drawTexturedRectangle(float x1, float y1, float x2, float y2, std
 	glDeleteBuffers(1, &ib);
 	glDeleteBuffers(1, &uvbuffer);
 	glDisable(GL_TEXTURE_2D);
+
 }
 
 void Renderer::drawLine(float startPointX, float startPointY, float endPointX, float endPointY, float width)
 {
-	//Piirrä viiva:
-	//Onko tämä järkevä?????
+
+	glUseProgram(lineProgramID);
 
 	GLuint bv, bi;
 
@@ -567,7 +598,8 @@ void Renderer::drawLine(float startPointX, float startPointY, float endPointX, f
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bi);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_indices), g_indices, GL_DYNAMIC_DRAW);
 
-	glUniformMatrix4fv(MVP_MatrixID, 1, GL_FALSE, &MVP[0][0]);
+	//glUniformMatrix4fv(MVP_MatrixID, 1, GL_FALSE, &MVP[0][0]);
+	glUniform4f(line_color_ID, DefaultColor.r, DefaultColor.g, DefaultColor.b, DefaultColor.a);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bi);
@@ -601,8 +633,9 @@ void Renderer::drawLine(float startPointX, float startPointY, float endPointX, f
 
 
 }
-void Renderer::drawSprite(float posX, float posY, int rows, int colums, std::string textureName)
+void Renderer::drawSingleSprite(float posX, float posY, float height, float width, std::string textureName)
 {
+	
 	glDisable(GL_MULTISAMPLE);
 	//Tekstuuri temput ---------
 	glEnable(GL_TEXTURE_2D);
@@ -612,39 +645,40 @@ void Renderer::drawSprite(float posX, float posY, int rows, int colums, std::str
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(TextureID, 0);
-	GLuint vb, ib;
-
-	float spriteWidth = SP->getSpriteWidth(rows);
-	float spriteHeight = SP->getSpriteHeight(colums);
-
-	//Spriteen neliö:
-	GLfloat g_vertex_buffer_data[] = {
-		posX, posY,
-		posX, posY + spriteHeight,
-		posX + spriteWidth, posY + spriteHeight,
-		posX + spriteWidth, posY,
-	};
-
-	glGenBuffers(1, &vb);
-	glBindBuffer(GL_ARRAY_BUFFER, vb);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
-
-
+	glUniform1f(sprite_alpha_ID, 1);
+	GLuint uvbuffer;
 	static const GLfloat g_uv_buffer_data[] =
 	{
 		0.0, 0.0,
-		0.5, 0.0,
-		0.5, 0.5,
-		0.0, 0.5,
+		0.0, 1.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		
 	};
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_DYNAMIC_DRAW);
+	GLuint vb, ib;
+
+	//Spriteen neliö:
+	GLfloat g_vertex_buffer_data[] = 
+	{
+		posX, posY,1.0f,
+		posX, posY-height,1.0f,
+		posX+width, posY,1.0f,
+		posX+width, posY-height,1.0f,
+	};
+	
+	
+	glGenBuffers(1, &vb);
+	glBindBuffer(GL_ARRAY_BUFFER, vb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
 
 	GLubyte g_indices[] =
 	{
 		0, 1, 2,
-		0, 3, 2,
+
+		1,3,2,
 	};
 	glGenBuffers(1, &ib);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
@@ -684,27 +718,99 @@ void Renderer::drawSprite(float posX, float posY, int rows, int colums, std::str
 	glDeleteBuffers(1, &ib);
 	glDeleteBuffers(1, &uvbuffer);
 	glDisable(GL_TEXTURE_2D);
+	
+}
+void Renderer::drawSprite(Sprite* SP,float posX, float posY, float spriteWidth, float spriteHeight, std::string textureName, float alpha)
+{
+	glDisable(GL_MULTISAMPLE);
+	//glDisable(GL_MULTISAMPLE_ARB);
+	//Tekstuuri temput ---------
+	glEnable(GL_TEXTURE_2D);
+	glUseProgram(textureProgramID);
+	TextureID = glGetUniformLocation(textureProgramID, "myTextureSampler");
+	GLuint texture = TM->getTexture(textureName);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(TextureID, 0);
+	glUniform1f(sprite_alpha_ID, alpha);
+	
+	float width = SP->getSpriteWidth();
+	float height = SP->getSpriteHeight();
 
-	//GLfloat g_vertex_buffer_data[] =
-	//{
-	//	x1, y1,
-	//	x1 + 1, y1,
-	//	x1 + 1, y1 + 1,
-	//	x1, y1 + 1,
-	//};
+	GLuint uvbuffer;
+	GLfloat g_uv_buffer_data[] =
+	{
+		spriteWidth,spriteHeight,
+		spriteWidth,spriteHeight+height,
+		spriteWidth+width,spriteHeight,
+		spriteWidth+width,spriteHeight+height,
 
-	//const float tw = float(1) / 1;
-	//const float th = float(spriteHeight) / texHeight;
-	//const int numPerRow = texWidth / spriteWidth;
-	//const float tx = (frameIndex % numPerRow) * tw;
-	//const float ty = (frameIndex / numPerRow + 1) * th;
-	//const float texVerts[] =
-	//{
-	//	tx, ty,
-	//	tx + tw, ty,
-	//	tx + tw, ty + th,
-	//	tx, ty + th
-	//};
+	};
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_DYNAMIC_DRAW);
+	GLuint vb, ib;
+
+	/*float spriteWidth = SP->getSpriteWidth(rows);
+	float spriteHeight = SP->getSpriteHeight(colums);*/
+
+	//Spriten neliö:
+	GLfloat g_vertex_buffer_data[] =
+	{
+		posX, posY, 1.0f,
+		posX, posY - height, 1.0f,
+		posX + width, posY, 1.0f,
+		posX + width, posY - height, 1.0f,
+	};
+
+
+	glGenBuffers(1, &vb);
+	glBindBuffer(GL_ARRAY_BUFFER, vb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
+
+	GLubyte g_indices[] =
+	{
+		0, 1, 2,
+		1, 3, 2,
+	};
+	glGenBuffers(1, &ib);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_indices), g_indices, GL_DYNAMIC_DRAW);
+
+	glUniformMatrix4fv(MVP_MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,                  // attribute 
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+		);
+
+
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glVertexAttribPointer(
+		1,                  // attribute 1
+		2,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+		);
+
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (GLvoid*)0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+
+	glDeleteBuffers(1, &vb);
+	glDeleteBuffers(1, &ib);
+	glDeleteBuffers(1, &uvbuffer);
+	glDisable(GL_TEXTURE_2D);
 }
 void Renderer::setColor(float r, float g, float b, float a)
 {
@@ -722,11 +828,103 @@ void Renderer::setColor(float r, float g, float b, float a)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 }
 
-
 void Renderer::setColor(int color)
 {
-	float r = (float)((color >> 16) & 0xFF) / 255;
-	float g = (float)((color >> 8) & 0xFF) / 255;
-	float b = (float)((color >> 0) & 0xFF) / 255;
-	setColor(r, g, b, 1);
+	float r = (float)((color >> 24) & 0xFF) / 255;
+	float g = (float)((color >> 16) & 0xFF) / 255;
+	float b = (float)((color >> 8) & 0xFF) / 255;
+	float a = (float)((color >> 0) & 0xFF) / 255;
+	setColor(r, g, b, a);
+}
+
+void Renderer::drawPointSprite(float x, float y, float scale, PointSprite p, float alpha)
+{
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+
+	glUseProgram(pointProgramID);
+
+	glBindTexture(GL_TEXTURE_2D, TM->getTexture(p.getTexture()));
+	
+	glTexEnvi(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+
+	glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, GL_LOWER_LEFT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	GLuint vb;
+	GLfloat vertexData[] = {
+		x, y, 0.0, 1.0,
+	};
+	glGenBuffers(1, &vb);
+	glBindBuffer(GL_ARRAY_BUFFER, vb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_DYNAMIC_DRAW);
+
+	glUniform1f(scale_ID, scale);
+	glUniform1f(size_ID, 256);
+	glUniform1f(point_alpha_ID, alpha);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,                  // attribute 0
+		4,                  // size x, y,
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+		);
+
+	glDrawArrays(GL_POINTS, 0, 1);
+
+	glDisableVertexAttribArray(0);
+	glDeleteBuffers(1, &vb);
+	glDisable(GL_POINT_SPRITE);
+	//glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
+	//MVP = MVP_temp;
+}
+
+glm::mat4 Renderer::getMVP()
+{
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+
+	glm::mat4 projection = glm::ortho(-1.0f, 1.0f, -1.0f*height / width, 1.0f*height / width);
+	glm::mat4 view = glm::lookAt(cam_pos, cam_pos + cam_front, cam_up);
+	glm::mat4 model = glm::mat4(1.0f);
+
+	glm::mat4 mvp = projection * view * model;
+	return mvp;
+}
+
+//kutsutaan aina kun näppäintä painetaan/vapautetaan.
+void Renderer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key >= 0 && key < 1024)
+	{
+		if (action == GLFW_PRESS)
+			keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			keys[key] = false;
+	}
+}
+
+//Kameran kontrollit
+void Renderer::do_movement()
+{
+	GLfloat cam_speed = 0.01f;
+	if (keys[GLFW_KEY_W])
+		cam_pos += cam_speed * cam_front;
+	if (keys[GLFW_KEY_S])
+		cam_pos -= cam_speed * cam_front;
+	if (keys[GLFW_KEY_A])
+		cam_pos -= glm::normalize(glm::cross(cam_front, cam_up)) * cam_speed;
+	if (keys[GLFW_KEY_D])
+		cam_pos += glm::normalize(glm::cross(cam_front, cam_up)) * cam_speed;
 }

@@ -73,6 +73,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="common\shader.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PointSprite.cpp" />
     <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -83,10 +84,15 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="common\shader.hpp" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PointSprite.h" />
     <ClInclude Include="Polygon.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TextureManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\TextureFragmentShader.txt" />
+    <Text Include="shaders\TextureVertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

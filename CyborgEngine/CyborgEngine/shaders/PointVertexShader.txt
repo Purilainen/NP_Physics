@@ -1,0 +1,12 @@
+#version 120
+
+uniform float point_size;
+uniform float scale;
+
+in vec4 vertexPosition;
+
+void main()
+{
+	gl_Position = vertexPosition;
+	gl_PointSize = point_size * scale;
+}

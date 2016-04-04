@@ -1,20 +1,5 @@
 #include "TextureManager.h"
 
-TextureManager::TextureManager()
-{
-	//Ladataan oletus tekstuuri kun texturemanager luodaan.
-	loadTexture("default", "./textures/default.png");
-	loadTexture("sprite", "./textures/spriteTest.bmp");
-	loadTexture("sheet", "./textures/spriteSheetTest.png");
-}
-
-TextureManager::~TextureManager()
-{
-	// Tyhjennetään textures array.
-	//glDeleteTextures(textures.size(), textures);
-	textures.clear();
-}
-
 void TextureManager::loadTexture(std::string name, std::string filePath)
 {
 	GLuint texture;
@@ -22,7 +7,7 @@ void TextureManager::loadTexture(std::string name, std::string filePath)
 	glBindTexture(GL_TEXTURE_2D, texture);
 	//ladataan kuva tiedostosta (PNG, BMP, JPG, TGA, DDS, PSD, HDR)
 	const char* c = filePath.c_str();
-	unsigned char* image = SOIL_load_image(c, &width, &height, 0, SOIL_LOAD_RGB);
+	unsigned char* image = SOIL_load_image(c, &width, &height, 0, SOIL_LOAD_RGBA);
 
 	if (image == NULL) // Error jos kuvan lataus epäonnistuu
 	{
@@ -35,7 +20,7 @@ void TextureManager::loadTexture(std::string name, std::string filePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	//luodaan tekstuuri
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	textures.insert(make_pair(name, texture));
 
 	//Vapautetaan kuva data muistista käytön jälkeen
@@ -68,7 +53,7 @@ GLuint TextureManager::getTexture(std::string name)
 
 		if (i == textures.end())
 		{
-			std::cout << "Texture: " << name << " does not exist. Replaced with default texture" << std::endl;
+			//std::cout << "Texture: " << name << " does not exist. Replaced with default texture" << std::endl;
 			return getTexture("default");
 		}
 		else

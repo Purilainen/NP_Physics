@@ -1,0 +1,15 @@
+#version 120
+
+in vec2 texcoord;
+
+uniform sampler2D myTextSampler;
+uniform vec3 textColor;
+
+varying out vec4 color;
+
+void main()
+{
+//vec4 sampled = vec4(1.0,1.0,1.0, texture(myTextSampler, texcoord).r);
+//color = vec4(textColor, 1.0) * sampled;
+color = vec4(1.0, 1.0, 1.0, 1.0);
+}

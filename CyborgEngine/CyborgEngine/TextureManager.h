@@ -16,18 +16,32 @@
 class TextureManager
 {
 public:
+	static TextureManager* getInstance()
+	{
+		static TextureManager instance;
+		return &instance;
+	}
 	GLuint getTexture(const std::string name);
 	void loadTexture(std::string name, std::string filePath);
-	TextureManager();
-	~TextureManager();
 private:
-
+	TextureManager()
+	{
+		//ladataan default-tekstuuri
+		loadTexture("default", "./textures/default.png");
+		std::cout << "TM-init\n";
+	}
+	~TextureManager()
+	{
+		// Tyhjennetään textures array.
+		textures.clear();
+	}
 	 std::vector<unsigned char> png;
 	 int width, height;
 
 	 std::unordered_map<std::string, GLuint> textures;
 	 void deleteTexture(std::string name);
 
+	 static TextureManager instance;
 };
 
 #endif

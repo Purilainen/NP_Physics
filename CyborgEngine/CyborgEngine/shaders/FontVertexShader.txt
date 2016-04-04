@@ -1,0 +1,11 @@
+#version 120
+
+//attribute vec4 coord;
+in vec4 coord;
+varying out vec2 texcoord;
+
+void main()
+{
+gl_Position = vec4(coord.xy, 0.0, 1.0);
+texcoord = coord.zw;
+}

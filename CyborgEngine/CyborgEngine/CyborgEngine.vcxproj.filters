@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="NP_Physics">
-      <UniqueIdentifier>{8d8bc5b8-1637-4719-90d1-b33d51da0a21}</UniqueIdentifier>
+      <UniqueIdentifier>{da36d106-6d0b-4a0b-a48c-486b4d759d1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +37,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
@@ -62,8 +65,19 @@
     <ClInclude Include="Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointSprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>NP_Physics</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\TextureFragmentShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="shaders\TextureVertexShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

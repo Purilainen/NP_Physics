@@ -13,6 +13,7 @@ public:
 	//get
 	glm::vec2 getOrigin()const{ return origin; }
 	float getRotation()const{ return rotation; }
+	float getScale()const{ return scale; }
 
 	//std::vector<glm::vec2>* getPoints();
 	glm::vec2* getPoints(){ return points; }
@@ -24,6 +25,7 @@ public:
 	void setOrigin(glm::vec2 newOrigin){ origin = newOrigin; }
 	void setOrigin(float x, float y){ origin.x = x; origin.y = y; }
 	void setRotation(float angle){ rotation = angle; }
+	void setScale(float scale){ this->scale = scale; }
 	void setPoints(glm::vec2* p, int size);
 protected:
 	glm::vec2* points;
@@ -33,6 +35,7 @@ protected:
 
 	glm::vec2 origin;
 	float rotation;
+	float scale;
 };
 
 #endif

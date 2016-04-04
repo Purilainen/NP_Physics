@@ -1,0 +1,18 @@
+#version 120
+
+uniform sampler2D myTextureSampler;
+uniform float alpha;
+
+void main()
+{
+	vec4 c = texture2D(myTextureSampler, gl_PointCoord);
+	if(c.r > 0.99f && c.g < 0.01f && c.b > 0.99)
+	{
+		discard;
+	}
+	else
+	{
+		c.a = alpha;
+		gl_FragColor = c;
+	}
+}

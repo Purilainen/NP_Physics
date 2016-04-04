@@ -11,7 +11,7 @@ Circle::~Circle()
 
 void Circle::updatePoints()
 {
-	points = new glm::vec2[precision];
+	points = new glm::vec2[precision+1];
 	numPoints = precision;
 	points[0] = glm::vec2(0, 0);
 
