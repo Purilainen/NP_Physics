@@ -98,7 +98,7 @@ int main()
 			if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
 			{
 				isEnterPressed = true;
-				scene = (scene+1) % 3;
+				scene = (scene+1) % 3;		// SCENEJEN MÄÄRÄ?
 				a = 0.0f;
 			}
 		}
