@@ -98,7 +98,7 @@ int main()
 			if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
 			{
 				isEnterPressed = true;
-				scene = (scene+1) % 3;		// SCENEJEN MÄÄRÄ?
+				scene = (scene+1) % 4;		// SCENEJEN MÄÄRÄ?
 				a = 0.0f;
 			}
 		}
@@ -193,6 +193,11 @@ int main()
 					rain[i].y = 1.2;
 				}
 			}
+		}
+		else if (scene == 3)
+		{
+			Renderer::setColor(0.5f, 0.5f, 0.5f, 1.0f);
+			Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);
