@@ -196,8 +196,25 @@ int main()
 		}
 		else if (scene == 3)
 		{
+			Polygon p2;
+			glm::vec2 points2[]=
+			{
+				glm::vec2(-0.5, 0.5),
+				glm::vec2(-0.5, -0.5),
+				glm::vec2(0.5, -0.5),
+				glm::vec2(0.5, 0.5)
+			};
+
+			p2.setPoints(points2, 4);
+			p2.setRotation(a);
+			Renderer::drawPolygon(&p2, 0, 0);
+
+			
 			Renderer::setColor(0.5f, 0.5f, 0.5f, 1.0f);
-			Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
+			
+			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
+
+			
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);
