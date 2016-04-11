@@ -15,4 +15,4 @@ public:
 private:
 	Polygon *m_polygon;
 };
-#endif;
+#endif
