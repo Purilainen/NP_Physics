@@ -196,6 +196,7 @@ int main()
 		}
 		else if (scene == 3)
 		{
+			// Nikon testaus scene
 			Polygon p2;
 			glm::vec2 points2[]=
 			{
@@ -205,13 +206,35 @@ int main()
 				glm::vec2(0.5, 0.5)
 			};
 
+			Polygon p3;
+			glm::vec2 points3[] =
+			{
+				glm::vec2(-0.5, 0.5),
+				glm::vec2(-0.5, -0.5),
+				glm::vec2(0.5, -0.5),
+				glm::vec2(0.5, 0.5)
+			};
+
+			Polygon p4;
+			glm::vec2 points4[] =
+			{
+				glm::vec2(-0.5, 0.5),
+				glm::vec2(-0.5, -0.5),
+				glm::vec2(0.5, -0.5),
+				glm::vec2(0.5, 0.5)
+			};
+
 			p2.setPoints(points2, 4);
+			Renderer::setColor(1, 1, 1, 0.5);
 			p2.setRotation(a);
 			Renderer::drawPolygon(&p2, 0, 0);
 
+			p3.setPoints(points3, 4);
+			Renderer::drawPolygon(&p3, 0.5, -0.5);
 			
-			Renderer::setColor(0.5f, 0.5f, 0.5f, 1.0f);
-			
+			p4.setPoints(points4, 4);
+			Renderer::drawPolygon(&p4, 0, 0);
+
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 
 			
