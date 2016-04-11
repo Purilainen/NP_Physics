@@ -54,6 +54,9 @@
     <ClCompile Include="NP_World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NP_Shape.cpp">
+      <Filter>NP_Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="NP_World.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_Shape.h">
+      <Filter>NP_Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
