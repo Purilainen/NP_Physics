@@ -72,6 +72,9 @@
   <ItemGroup>
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="common\shader.cpp" />
+    <ClCompile Include="NP_Body.cpp" />
+    <ClCompile Include="NP_Object.cpp" />
+    <ClCompile Include="NP_World.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointSprite.cpp" />
     <ClCompile Include="Polygon.cpp" />
@@ -83,6 +86,9 @@
   <ItemGroup>
     <ClInclude Include="Circle.h" />
     <ClInclude Include="common\shader.hpp" />
+    <ClInclude Include="NP_Body.h" />
+    <ClInclude Include="NP_Object.h" />
+    <ClInclude Include="NP_World.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointSprite.h" />
     <ClInclude Include="Polygon.h" />

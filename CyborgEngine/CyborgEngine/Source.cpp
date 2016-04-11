@@ -200,41 +200,31 @@ int main()
 			Polygon p2;
 			glm::vec2 points2[]=
 			{
-				glm::vec2(-0.5, 0.5),
-				glm::vec2(-0.5, -0.5),
-				glm::vec2(0.5, -0.5),
-				glm::vec2(0.5, 0.5)
+				glm::vec2(-0.25, 0.25),
+				glm::vec2(-0.25, -0.25),
+				glm::vec2(0.25, -0.25),
+				glm::vec2(0.25, 0.25)
 			};
 
 			Polygon p3;
 			glm::vec2 points3[] =
 			{
-				glm::vec2(-0.5, 0.5),
-				glm::vec2(-0.5, -0.5),
-				glm::vec2(0.5, -0.5),
-				glm::vec2(0.5, 0.5)
-			};
-
-			Polygon p4;
-			glm::vec2 points4[] =
-			{
-				glm::vec2(-0.5, 0.5),
-				glm::vec2(-0.5, -0.5),
-				glm::vec2(0.5, -0.5),
-				glm::vec2(0.5, 0.5)
+				glm::vec2(-0.5, 0.25),
+				glm::vec2(-0.5, -0.25),
+				glm::vec2(0.5, -0.25),
+				glm::vec2(0.5, 0.25)
 			};
 
 			p2.setPoints(points2, 4);
 			Renderer::setColor(1, 1, 1, 0.5);
 			p2.setRotation(a);
 			Renderer::drawPolygon(&p2, 0, 0);
-
-			p3.setPoints(points3, 4);
-			Renderer::drawPolygon(&p3, 0.5, -0.5);
 			
-			p4.setPoints(points4, 4);
-			Renderer::drawPolygon(&p4, 0, 0);
-
+			p3.setScale(2.0f);
+			p3.setPoints(points3, 4);
+			p3.setOrigin(0, -a);
+			Renderer::drawPolygon(&p3, 0, 1);
+			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 
 			

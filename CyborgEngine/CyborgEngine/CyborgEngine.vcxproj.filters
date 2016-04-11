@@ -45,6 +45,15 @@
     <ClCompile Include="Physics.cpp">
       <Filter>NP_Physics</Filter>
     </ClCompile>
+    <ClCompile Include="NP_Object.cpp">
+      <Filter>NP_Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="NP_Body.cpp">
+      <Filter>NP_Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="NP_World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -70,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>NP_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_Object.h">
+      <Filter>NP_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_Body.h">
+      <Filter>NP_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_World.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
