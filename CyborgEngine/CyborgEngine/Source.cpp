@@ -9,6 +9,10 @@ GLFWwindow* window;
 #include "PointSprite.h"
 #include "Sprite.h"
 
+#include "NP_World.h"
+#include "NP_Body.h"
+#include "NP_Object.h"
+
 int main()
 {
 

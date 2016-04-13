@@ -3,39 +3,54 @@
 void NP_Body::update(float deltaTime)
 {
 
-    if (isStatic)
+    inProximity(m_collider.size * 1.5f); 
+
+    if (Static)
     {
         //Don't update anything?
+        //Don't check collisions
     }
-    else if (isKinematic)
+    else if (Kinematic)
     {
-        //Check collisions with other bodies
+        if (inProximityWithOtherBody)
+        {
+            //Check accurate collisions with other bodies
+        }
+        
         //Position is locked
         //Velocity = 0;
         //Rotation?
     }
-    else if (isDynamic)
+    else if (Dynamic)
     {
-        //Check collisions
+        if (inProximityWithOtherBody)
+        {
+            //Check accurate collisions with other bodies
+        }
         //Update position
         //Update velocity
         //Update rotation
     }
     
-    // NOTE: Update positions first - then velocities?
+    // NOTE: Update positions first - then velocities
 
-    //Update position/speed with euler here (This works only for vertical movement updating)
-    //Pos: yn+1 = yn + vn * step
-    //Velocity: vn+1 = vn - g * step
-
-    //Acceleration?
-    //Rotations?
+    //Acceleration? - Calculate acceleration for body and use it to determine velocity in each new step
+    //Rotations? - Get rotations to use in collisions and such
 
     //More euler stuff
-    //Velocity.x(i+1) = Velocity.x(i) = StartVelocity * cos(theta0) //Without friction/drag etc.
-    //Velocity.y(i+1) = Velocity.y(i) - g * step, Velocity.y(0) = StartVelocity * sin(theta0) //Gravity affecting the velocity
+
+    //Calculate new positions
     //pos.x(i+1) = x(i) + Velocity.x(i) * step //x(0) = startPos.x
     //pos.y(i+1) = y(i) + Velocity.y(i) * step //y(0) = startPos.y
+
+    //Calculate new velocity.x -> use acceleration
+    //Velocity.x(i+1) = Velocity.x(i) = StartVelocity * cos(theta0) //Without friction/drag etc.
+    //Velx += accel.x * step
+    
+    //Calculate new velocity.y -> use acceleration
+    //Velocity.y(i+1) = Velocity.y(i) - g * step 
+    //Velocity.y(0) = StartVelocity * sin(theta0) //Gravity affecting the velocity
+    //vel.y += accel.y * step
 
     //MOVE()
     //velocity += acceleration
@@ -44,7 +59,16 @@ void NP_Body::update(float deltaTime)
 
 }
 
-NP_Body::NP_Body() : isStatic(false), isKinematic(false), isDynamic(true)
+bool NP_Body::inProximity(float radius)
+{
+    // Check surroundings in a circle area
+    // return true if other bodies found
+
+    //radius = size + offset
+    return true;
+}
+
+NP_Body::NP_Body() : Static(false), Kinematic(false), Dynamic(true)
 {
     //Bodies are dynamic by default
 }

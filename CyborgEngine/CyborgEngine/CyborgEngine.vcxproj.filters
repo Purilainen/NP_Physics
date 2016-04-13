@@ -51,9 +51,6 @@
     <ClCompile Include="NP_Body.cpp">
       <Filter>NP_Physics</Filter>
     </ClCompile>
-    <ClCompile Include="NP_Shape.cpp">
-      <Filter>NP_Physics</Filter>
-    </ClCompile>
     <ClCompile Include="NP_World.cpp">
       <Filter>NP_Physics</Filter>
     </ClCompile>
@@ -87,9 +84,6 @@
       <Filter>NP_Physics</Filter>
     </ClInclude>
     <ClInclude Include="NP_Body.h">
-      <Filter>NP_Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="NP_Shape.h">
       <Filter>NP_Physics</Filter>
     </ClInclude>
     <ClInclude Include="NP_World.h">
