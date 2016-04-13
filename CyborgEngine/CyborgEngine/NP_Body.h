@@ -15,6 +15,8 @@ public:
     //bool isStatic
     //bool isKinematic
     //addCollider(Shape &shape)
+    //bool detectCollisions
+
 
 	NP_Body();
 	~NP_Body();
