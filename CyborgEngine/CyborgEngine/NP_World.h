@@ -1,17 +1,18 @@
 #ifndef NP_WORLD_H
 #define NP_WORLD_H
 
+#include "NP_Object.h"
+#include <vector>
+
 class NP_World
 {
 public:
 	NP_World();
 	~NP_World();
 
-    void update();
+    void update(float deltaTime);
 
 private:
-	float g = 9.81; // Gravity
-
-    //std::vec<objects> m_objects
+    std::vector<NP_Object> m_objects;
 };
 #endif;

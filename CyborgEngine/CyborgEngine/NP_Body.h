@@ -7,13 +7,12 @@ class NP_Body
 {
 public:
 
-    void update(float step);
+    void update(float deltaTime);
 
     //glm::vec2 getPos()
     //float getRotation()
     //set...
-    //bool isStatic
-    //bool isKinematic
+
     //addCollider(Shape &shape)
     //bool detectCollisions
 
@@ -21,10 +20,11 @@ public:
 	NP_Body();
 	~NP_Body();
 
+protected:
+    bool isStatic, isKinematic, isDynamic;
 private:
-    float m_velocity;
+    glm::vec2 m_velocity;
     glm::vec2 m_position;
     float g = 9.81;
-
 };
 #endif

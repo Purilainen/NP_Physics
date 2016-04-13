@@ -12,7 +12,7 @@ public:
 	NP_Object();
 	~NP_Object();
 
-    void update();
+    void update(float deltaTime);
 
 	void bindPolygon(Polygon *polygon);
     void bindBody(NP_Body *body);
