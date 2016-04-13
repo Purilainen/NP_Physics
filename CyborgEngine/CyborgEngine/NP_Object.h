@@ -17,6 +17,8 @@ public:
 	void bindPolygon(Polygon *polygon);
     void bindBody(NP_Body *body);
 
+    NP_Body* getBody() { return m_body; }
+
 private:
 	Polygon *m_polygon;
     NP_Body *m_body;

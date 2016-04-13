@@ -12,7 +12,9 @@ public:
 
     void update(float deltaTime);
 
+    void checkProximity(NP_Object* obj);
+
 private:
-    std::vector<NP_Object> m_objects;
+    std::vector<NP_Object*> m_objects;
 };
 #endif;

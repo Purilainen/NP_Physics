@@ -2,6 +2,7 @@
 #define NP_BODY_H
 
 #include "glm/glm.hpp"
+#include "NP_World.h"
 
 struct Collider 
 {
@@ -25,14 +26,15 @@ public:
     //bool detectCollisions
     //addCollisionBox(points)
     //addColliderFromPoly(polygon)
+    void addBoxCollider(float size);
 
     bool isStatic(bool value) { Static = value; }
     bool isDynamic(bool value){ Dynamic = value; }
     bool isKinematic(bool value) { Kinematic = value; }
-    bool inProximity(float radius); //Check in circle radius if there are other bodies near by, if true - do accurate collision check
+    bool inProximity(NP_Body* b); //Check in circle radius if there are other bodies near by, if true - do accurate collision check
     //checkCollision()
 
-	NP_Body();
+	NP_Body(NP_World world);
 	~NP_Body();
     Collider m_collider;
 protected:
@@ -41,6 +43,7 @@ protected:
 private:
     glm::vec2 m_velocity;
     glm::vec2 m_position;
+    NP_World m_world;
     float g = 9.81;
     
     bool inProximityWithOtherBody;

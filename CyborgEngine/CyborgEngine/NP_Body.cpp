@@ -59,16 +59,31 @@ void NP_Body::update(float deltaTime)
 
 }
 
-bool NP_Body::inProximity(float radius)
+void NP_Body::addBoxCollider(float size)
+{
+    //TODO : Support for rectangles and not only squares
+    glm::vec2 points[] =
+    {
+        glm::vec2(-0.25, 0.25)*size,
+        glm::vec2(-0.25, -0.25)*size,
+        glm::vec2(0.25, -0.25)*size,
+        glm::vec2(0.25, 0.25)*size
+    };
+
+    m_collider.points = points;
+    m_collider.size = size;
+}
+
+bool NP_Body::inProximity(NP_Body* b)
 {
     // Check surroundings in a circle area
     // return true if other bodies found
-
+    
     //radius = size + offset
     return true;
 }
 
-NP_Body::NP_Body() : Static(false), Kinematic(false), Dynamic(true)
+NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(world)
 {
     //Bodies are dynamic by default
 }
