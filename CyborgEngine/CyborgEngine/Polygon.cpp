@@ -6,6 +6,7 @@ Polygon::Polygon()
 	setRotation(0);
 	setOrigin(0, 0);
 	setScale(1.0);
+	//setPoints(0, 0);
 }
 
 Polygon::~Polygon()
