@@ -3,6 +3,8 @@
 
 #define PI 3.14159265
 
+
+
 #include "Renderer.h"
 #include "Circle.h"
 GLFWwindow* window;
@@ -94,6 +96,15 @@ int main()
 
 	bool isEnterPressed = false;
 	int scene = 0;
+
+    //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- START
+    NP_World world;
+    NP_Body testBody(world);
+    testBody.addBoxCollider(1);
+    NP_Object testObj;
+    testObj.bindBody(&testBody);
+    world.addObject(&testObj);
+    //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
 		Renderer::do_movement();
@@ -200,6 +211,11 @@ int main()
 		}
 		else if (scene == 3)
 		{
+           
+
+            
+
+
 			// Nikon testaus scene
 			Polygon p2;
 			glm::vec2 points2[]=
@@ -209,6 +225,8 @@ int main()
 				glm::vec2(0.25, -0.25),
 				glm::vec2(0.25, 0.25)
 			};
+
+            
 
 			Polygon p3;
 			glm::vec2 points3[] =
@@ -224,14 +242,17 @@ int main()
 			p2.setRotation(a);
 			Renderer::drawPolygon(&p2, 0, 0);
 			
-			p3.setScale(2.0f);
-			p3.setPoints(points3, 4);
-			p3.setOrigin(0, -a);
+
+            //p3.setScale(2.0f);
+            p3.setPoints(points3, 4);
+
+            testObj.bindPolygon(&p3);
+            world.update(a/100);
+
+			
 			Renderer::drawPolygon(&p3, 0, 1);
 			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
-
-			
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);

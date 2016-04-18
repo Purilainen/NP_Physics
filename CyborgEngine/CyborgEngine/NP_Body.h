@@ -29,6 +29,7 @@ public:
     //addColliderFromPoly(polygon)
     void addBoxCollider(float size);
 
+    glm::vec2 getPos() { return m_position; }
     bool isStatic(bool value) { Static = value; }
     bool isDynamic(bool value){ Dynamic = value; }
     bool isKinematic(bool value) { Kinematic = value; }

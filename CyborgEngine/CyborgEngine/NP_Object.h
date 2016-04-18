@@ -4,6 +4,8 @@
 #include "Polygon.h"
 #include "NP_Body.h"
 
+
+
 class NP_Body;
 class Polygon;
 class NP_Object
