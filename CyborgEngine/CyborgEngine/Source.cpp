@@ -246,9 +246,10 @@ int main()
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
 
+            //NP_Physics
             testObj.bindPolygon(&p3);
             world.update(a/100);
-
+            //NP_Physics
 			
 			Renderer::drawPolygon(&p3, 0, 1);
 			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
