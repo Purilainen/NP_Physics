@@ -44,6 +44,7 @@ protected:
 private:
     glm::vec2 m_velocity;
     glm::vec2 m_position;
+    glm::vec2 m_acceleration;
     NP_World* m_world;
     float g = 9.81;
     
