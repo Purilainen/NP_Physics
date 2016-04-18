@@ -15,7 +15,10 @@ void NP_World::update(float deltaTime)
     //Iterate through objects in the world and call their update function
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
-        m_objects[i]->update(deltaTime);
+        for (size_t j = 0; j < m_objects.size(); j++)
+        {
+
+        }
     }
 }
 
@@ -25,6 +28,7 @@ void NP_World::checkProximity(NP_Object* obj)
     glm::vec2 pos2 = obj->getBody()->m_collider.position;
 
     //Do with 2 loops just to iterate through everything instead and check all bodies
+    //Move this to body
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
         //Calculate distance between two objects

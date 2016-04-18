@@ -3,7 +3,7 @@
 void NP_Body::update(float deltaTime)
 {
 
-    inProximity(m_collider.size * 1.5f); 
+    //inProximity(m_collider.size * 1.5f); 
 
     if (Static)
     {
@@ -83,7 +83,7 @@ bool NP_Body::inProximity(NP_Body* b)
     return true;
 }
 
-NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(world)
+NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(&world)
 {
     //Bodies are dynamic by default
 }

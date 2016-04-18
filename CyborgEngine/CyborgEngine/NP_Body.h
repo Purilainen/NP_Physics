@@ -12,6 +12,7 @@ struct Collider
     float size = 1.0f;
 };
 
+class NP_World;
 class NP_Body
 {
 public:
@@ -43,7 +44,7 @@ protected:
 private:
     glm::vec2 m_velocity;
     glm::vec2 m_position;
-    NP_World m_world;
+    NP_World* m_world;
     float g = 9.81;
     
     bool inProximityWithOtherBody;

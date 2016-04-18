@@ -3,7 +3,7 @@
 
 #include "NP_Object.h"
 #include <vector>
-
+class NP_Object;
 class NP_World
 {
 public:
