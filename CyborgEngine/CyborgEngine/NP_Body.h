@@ -3,6 +3,7 @@
 
 #include "glm/glm.hpp"
 #include "NP_World.h"
+#include "Polygon.h"
 
 struct Collider 
 {
@@ -28,6 +29,7 @@ public:
     //addCollisionBox(points)
     //addColliderFromPoly(polygon)
     void addBoxCollider(float size);
+	void addColliderFromPoly(Polygon *pol);
 
     bool isStatic(bool value) { Static = value; }
     bool isDynamic(bool value){ Dynamic = value; }

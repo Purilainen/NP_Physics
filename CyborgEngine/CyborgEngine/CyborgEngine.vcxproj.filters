@@ -42,9 +42,6 @@
     <ClCompile Include="PointSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>NP_Physics</Filter>
-    </ClCompile>
     <ClCompile Include="NP_Object.cpp">
       <Filter>NP_Physics</Filter>
     </ClCompile>
@@ -76,9 +73,6 @@
     </ClInclude>
     <ClInclude Include="PointSprite.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>NP_Physics</Filter>
     </ClInclude>
     <ClInclude Include="NP_Object.h">
       <Filter>NP_Physics</Filter>

@@ -224,12 +224,22 @@ int main()
 			p2.setRotation(a);
 			Renderer::drawPolygon(&p2, 0, 0);
 			
-			p3.setScale(2.0f);
 			p3.setPoints(points3, 4);
+			p3.setScale(2.0f);
 			p3.setOrigin(0, -a);
 			Renderer::drawPolygon(&p3, 0, 1);
 			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
+
+			p3.getOrigin();
+
+			p3.getPoints();
+
+			NP_World world;
+			NP_Body body(world);
+
+
+			body.addColliderFromPoly(&p3);
 
 			
 		}
