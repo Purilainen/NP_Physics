@@ -98,12 +98,27 @@ int main()
 	int scene = 0;
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- START
-    NP_World world;
-    NP_Body testBody(world);
+	
+	// Creating physics world
+	NP_World world;
+
+	// Creating bodies to the world
+    NP_Body testBody(world), testBody2(world);
+
+	// 
     testBody.addBoxCollider(1);
-    NP_Object testObj;
+	testBody2.addBoxCollider(1);
+
+	// Creating objects
+    NP_Object testObj, testObj2;
+
+	// Binding objects to bodies
     testObj.bindBody(&testBody);
+	testObj2.bindBody(&testBody2);
+
+	// Adding objects to the wold
     world.addObject(&testObj);
+	world.addObject(&testObj2);
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -239,8 +254,7 @@ int main()
 
 			p2.setPoints(points2, 4);
 			Renderer::setColor(1, 1, 1, 0.5);
-			p2.setRotation(a);
-			Renderer::drawPolygon(&p2, 0, 0);
+			//p2.setRotation(a);
 			
 
             //p3.setScale(2.0f);
@@ -248,10 +262,13 @@ int main()
 
             //NP_Physics
             testObj.bindPolygon(&p3);
+			testObj2.bindPolygon(&p2);
             world.update(a/100);
             //NP_Physics
 			
 			Renderer::drawPolygon(&p3, 0, 1);
+			Renderer::drawPolygon(&p2, 0, 0);
+
 			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 		}
