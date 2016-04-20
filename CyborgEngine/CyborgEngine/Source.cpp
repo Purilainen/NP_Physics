@@ -60,6 +60,7 @@ int main()
 	TM->loadTexture("part", "./textures/particle2.png");
 	TM->loadTexture("sheet","./textures/spriteSheetTest.png");
 	float a = 0;
+	float b = 0;			// For rotation
 	float spriteTimer = 0;
 	int spriteNumber = 0;
 
@@ -226,19 +227,17 @@ int main()
 		}
 		else if (scene == 3)
 		{
-           
+			b += 0.1f;
 
-            
-
-
-			// Nikon testaus scene
+           	// Nikon testaus scene
 			Polygon p2;
 			glm::vec2 points2[]=
 			{
-				glm::vec2(-0.25, 0.25),
+				glm::vec2(-0.375, 0.125),
 				glm::vec2(-0.25, -0.25),
 				glm::vec2(0.25, -0.25),
-				glm::vec2(0.25, 0.25)
+				glm::vec2(0.375, 0.125),
+				glm::vec2(0.0, 0.375)
 			};
 
             
@@ -252,13 +251,14 @@ int main()
 				glm::vec2(0.5, 0.25)
 			};
 
-			p2.setPoints(points2, 4);
+			p2.setPoints(points2, 5);
 			Renderer::setColor(1, 1, 1, 0.5);
-			//p2.setRotation(a);
+			p2.setRotation(b);
 			
 
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
+			p2.getPoints();
 
             //NP_Physics
             testObj.bindPolygon(&p3);

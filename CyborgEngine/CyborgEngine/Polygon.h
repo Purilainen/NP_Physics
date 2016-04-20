@@ -17,10 +17,6 @@ public:
 
 	//std::vector<glm::vec2>* getPoints();
 	glm::vec2* getPoints(){ return points; }
-	glm::vec2* getPoints()const
-	{
-		return this->points;
-	}
 	glm::vec2 getMin(){ return glm::vec2(minX, minY); }
 	glm::vec2 getMax(){ return glm::vec2(maxX, maxY); }
 	int getNumPoints(){ return numPoints; };

@@ -29,7 +29,7 @@ public:
     //addCollisionBox(points)
     //addColliderFromPoly(polygon)
     void addBoxCollider(float size);
-	//void addColliderFromPoly(Polygon *pol);
+	void addColliderFromPoly(float size);
 
     glm::vec2 getPos() { return m_position; }
     bool isStatic(bool value) { Static = value; }

@@ -83,12 +83,11 @@ void NP_Body::addBoxCollider(float size)
     m_collider.points = points;
     m_collider.size = size;
 }
-//
-//void NP_Body::addColliderFromPoly(Polygon *pol)
-//{
-//	//pol->getPoints();
-//	m_collider.points = pol->getPoints();
-//}
+
+void NP_Body::addColliderFromPoly(float size)
+{
+	
+}
 
 bool NP_Body::inProximity(NP_Body* b)
 {
