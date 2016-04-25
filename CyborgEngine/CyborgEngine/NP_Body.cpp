@@ -31,13 +31,18 @@ void NP_Body::update(float deltaTime)
         m_position.x = m_position.x + m_velocity.x * deltaTime; /*step*/
         m_position.y = m_position.y + m_velocity.y * deltaTime; /*replace dTime with step*/
 
-        //Calculate forces / acceleration (F = ma)
+        //Calculate accelerations (F = ma)
+        m_acceleration.x = m_force.x / mass;
+        m_acceleration.y = (m_force.y - g) / mass;
+
+        m_velocity.y = m_acceleration.y * deltaTime;
+        m_velocity.x = m_acceleration.x * deltaTime;
 
         //Update velocity
         //m_velocity.x += m_acceleration.x * deltaTime; //Increase / decrease speed with acceleration
         //m_velocity.y += m_acceleration.y * deltaTime; //Increase / decrease speed with acceleration
-        m_velocity.y = m_velocity.y - g * deltaTime; //Gravity
-        Sleep(10);
+        //m_velocity.y = m_velocity.y - g * deltaTime; //Gravity
+        Sleep(5);
         //Update rotation
 
     }
@@ -86,7 +91,7 @@ void NP_Body::addBoxCollider(float size)
 
 void NP_Body::addColliderFromPoly(float size)
 {
-	
+	//TODO: Get points from polygon and give them to the collider
 }
 
 bool NP_Body::inProximity(NP_Body* b)
@@ -109,6 +114,12 @@ bool NP_Body::inProximity(NP_Body* b)
     //else return false
     
     return true;
+}
+
+void NP_Body::addForce(float forceX, float forceY)
+{
+    m_force.x = forceX;
+    m_force.y = forceY;
 }
 
 NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(&world), m_velocity(0), m_position(0)

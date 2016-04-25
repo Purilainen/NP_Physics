@@ -240,8 +240,6 @@ int main()
 				glm::vec2(0.0, 0.375)
 			};
 
-            
-
 			Polygon p3;
 			glm::vec2 points3[] =
 			{
@@ -255,10 +253,11 @@ int main()
 			Renderer::setColor(1, 1, 1, 0.5);
 			p2.setRotation(b);
 			
-
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
 			p2.getPoints();
+
+            testObj.getBody()->addForce(2, 9.81);
 
             //NP_Physics
             testObj.bindPolygon(&p3);
