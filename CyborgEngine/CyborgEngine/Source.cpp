@@ -251,13 +251,17 @@ int main()
 
 			p2.setPoints(points2, 5);
 			Renderer::setColor(1, 1, 1, 0.5);
-			p2.setRotation(b);
+			//p2.setRotation(b);
 			
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
 			p2.getPoints();
 
-            testObj.getBody()->addForce(2, 9.81);
+
+            //if (glfwGetKey(window, GLFW_KEY_O))
+            //testObj.getBody()->addForce(0, 9.81);
+
+            
 
             //NP_Physics
             testObj.bindPolygon(&p3);

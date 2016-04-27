@@ -21,11 +21,10 @@ NP_Object::~NP_Object()
 
 void NP_Object::update(float deltaTime)
 {
-    //Update attached body (Call update func)
-    m_body->update(deltaTime);
-    
+    //Update attached body (Call update func) 
     // Update polygons position/rotation to keep it in par with the physics body that its attached to.
     //m_polygon->setOrigin(m_body->m_collider.position);
     m_polygon->setOrigin(m_body->getPos());
+    m_polygon->setRotation(m_body->m_orientation);
     //m_polygon->setRotation(m_body->m_collider.rotation);
 }

@@ -38,23 +38,26 @@ public:
     bool inProximity(NP_Body* b); //Check in circle radius if there are other bodies near by, if true - do accurate collision check
     //checkCollision()
 
+    
+    void setOrient(float orient) { m_orientation = orient; }
     void addForce(float forceX, float forceY);
 
 	NP_Body(NP_World world);
 	~NP_Body();
     Collider m_collider;
-protected:
     bool Static, Kinematic, Dynamic;
-    
-private:
     glm::vec2 m_velocity;
     glm::vec2 m_position;
     glm::vec2 m_acceleration;
     glm::vec2 m_force;
     NP_World* m_world;
-    float mass = 1.0f;
-    float g = 9.81f;
+    float m_mass = 1.0f;
+    float m_gravity = 9.81f;
     
+    float m_angularVelocity;
+    float m_torque;
+    float m_orientation;
+
     bool inProximityWithOtherBody;
 };
 #endif
