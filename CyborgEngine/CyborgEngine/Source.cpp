@@ -146,7 +146,7 @@ int main()
 		Renderer::initDraw();
 
 		//--------------------draw--------------------
-		if (scene == 0)
+		if (scene == 3)
 		{
 			a += 0.2;
 			if (a > PI * 2)
@@ -172,7 +172,7 @@ int main()
 			Renderer::drawLine(-1.0, -0.9, 1.0, -0.9, 10);
 			Renderer::drawLine(-1.0, -0.8, 1.0, -0.8, 10);
 		}
-		else if (scene == 1)
+		else if (scene == 2)
 		{
 			Renderer::setColor(1.0, 0, 0, (sin(a) + 1) / 10);
 			Renderer::drawPolygon(&c, 0, 0);
@@ -201,7 +201,7 @@ int main()
 				Renderer::drawPointSprite(cos((i*step + a) * 2 + PI / 2), sin(i*step + a), (sin(step*i - a) / 2.2 + 0.51) / 2, ps, cos(i*step + a * 2) / 2 + 0.5);
 			}
 		}
-		else if (scene == 2)
+		else if (scene == 1)
 		{
 			//sprites
 			Renderer::setColor(0x000040FF);
@@ -225,11 +225,11 @@ int main()
 				}
 			}
 		}
-		else if (scene == 3)
+		else if (scene == 0)
 		{
 			b += 0.1f;
 
-           	// Nikon testaus scene
+           	// Physics test scene
 			Polygon p2;
 			glm::vec2 points2[]=
 			{
@@ -251,16 +251,10 @@ int main()
 
 			p2.setPoints(points2, 5);
 			Renderer::setColor(1, 1, 1, 0.5);
-			//p2.setRotation(b);
 			
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
 			p2.getPoints();
-
-
-            //if (glfwGetKey(window, GLFW_KEY_O))
-            //testObj.getBody()->addForce(0, 9.81);
-
             
 
             //NP_Physics
@@ -271,9 +265,6 @@ int main()
 			
 			Renderer::drawPolygon(&p3, 0, 1);
 			Renderer::drawPolygon(&p2, 0, 0);
-
-			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
-			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);
