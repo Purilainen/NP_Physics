@@ -261,7 +261,7 @@ int main()
             //if (glfwGetKey(window, GLFW_KEY_O))
             //testObj.getBody()->addForce(0, 9.81);
 
-            Renderer::drawCircle(testObj.getBody()->m_position.x, testObj.getBody()->m_position.y, .1f);
+            //Renderer::drawCircle(testObj.getBody()->m_position.x, testObj.getBody()->m_position.y, .1f);
             
 
 			Renderer::setColor(1, 1, 1, 0.5);
@@ -273,7 +273,7 @@ int main()
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
-            world.update(a / 200);
+            world.update(a / 5000);
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
 

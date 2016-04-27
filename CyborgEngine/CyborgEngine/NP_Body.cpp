@@ -89,6 +89,11 @@ void NP_Body::addBoxCollider(float size)
     m_collider.size = size;
 }
 
+void NP_Body::addCircleCollider(float radius)
+{
+    
+}
+
 void NP_Body::addColliderFromPoly(float size)
 {
 	//TODO: Get points from polygon and give them to the collider

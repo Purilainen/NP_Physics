@@ -29,6 +29,8 @@ public:
     //addCollisionBox(points)
     //addColliderFromPoly(polygon)
     void addBoxCollider(float size);
+    void addCircleCollider(float radius);
+
 	void addColliderFromPoly(float size);
 
     glm::vec2 getPos() { return m_position; }
@@ -53,7 +55,7 @@ public:
     NP_World* m_world;
     float m_mass = 10.0f;
     
-    float m_angularVelocity = 1.f;
+    float m_angularVelocity;
     float m_torque;
     float m_orientation;
 
