@@ -26,25 +26,25 @@ void NP_Body::update(float deltaTime)
         {
             //Check accurate collisions with other bodies
         }
+        
+        ////Update position
+        //m_position.x = m_position.x + m_velocity.x * deltaTime; /*step*/
+        //m_position.y = m_position.y + m_velocity.y * deltaTime; /*replace dTime with step*/
 
-        //Update position
-        m_position.x = m_position.x + m_velocity.x * deltaTime; /*step*/
-        m_position.y = m_position.y + m_velocity.y * deltaTime; /*replace dTime with step*/
+        ////Calculate accelerations (F = ma)
+        //m_acceleration.x = m_force.x / m_mass;
+        //m_acceleration.y = (m_force.y - m_gravity) / m_mass;
 
-        //Calculate accelerations (F = ma)
-        m_acceleration.x = m_force.x / m_mass;
-        m_acceleration.y = (m_force.y - m_gravity) / m_mass;
+        //m_velocity.y += m_acceleration.y * deltaTime;
+        //m_velocity.x += m_acceleration.x * deltaTime;
 
-        m_velocity.y += m_acceleration.y * deltaTime;
-        m_velocity.x += m_acceleration.x * deltaTime;
-
-        //Update velocity
-        //m_velocity.x += m_acceleration.x * deltaTime; //Increase / decrease speed with acceleration
-        //m_velocity.y += m_acceleration.y * deltaTime; //Increase / decrease speed with acceleration
-        //m_velocity.y = m_velocity.y - g * deltaTime; //Gravity
-        Sleep(5);
-        //Update rotation
-
+        ////Update velocity
+        ////m_velocity.x += m_acceleration.x * deltaTime; //Increase / decrease speed with acceleration
+        ////m_velocity.y += m_acceleration.y * deltaTime; //Increase / decrease speed with acceleration
+        ////m_velocity.y = m_velocity.y - g * deltaTime; //Gravity
+        //Sleep(5);
+        ////Update rotation
+        
     }
     
     // NOTE: Update positions first - then velocities

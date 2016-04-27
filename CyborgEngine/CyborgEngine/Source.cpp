@@ -15,6 +15,9 @@ GLFWwindow* window;
 #include "NP_Body.h"
 #include "NP_Object.h"
 
+
+
+
 int main()
 {
 
@@ -227,7 +230,7 @@ int main()
 		}
 		else if (scene == 3)
 		{
-			b += 0.1f;
+			
 
            	// Nikon testaus scene
 			Polygon p2;
@@ -250,28 +253,30 @@ int main()
 			};
 
 			p2.setPoints(points2, 5);
-			Renderer::setColor(1, 1, 1, 0.5);
-			//p2.setRotation(b);
+			Renderer::setColor(1, 1, 1, 0.5);;
 			
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
-			p2.getPoints();
+			//p2.getPoints();
 
 
             //if (glfwGetKey(window, GLFW_KEY_O))
             //testObj.getBody()->addForce(0, 9.81);
 
+            Renderer::drawCircle(testObj.getBody()->m_position.x, testObj.getBody()->m_position.y, .1f);
+            
             
 
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
-            world.update(a/100);
+            
             //NP_Physics
-			
-			Renderer::drawPolygon(&p3, 0, 1);
-			Renderer::drawPolygon(&p2, 0, 0);
+            world.update(a / 200);
+            Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
+            Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
 
+            
 			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
 			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
 		}

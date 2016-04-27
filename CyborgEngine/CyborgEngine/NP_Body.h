@@ -51,10 +51,9 @@ public:
     glm::vec2 m_acceleration;
     glm::vec2 m_force;
     NP_World* m_world;
-    float m_mass = 1.0f;
-    float m_gravity = 9.81f;
+    float m_mass = 10.0f;
     
-    float m_angularVelocity;
+    float m_angularVelocity = 1.f;
     float m_torque;
     float m_orientation;
 

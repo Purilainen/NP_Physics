@@ -20,6 +20,6 @@ public:
     
 private:
     std::vector<NP_Object*> m_objects;
-    glm::vec2 m_gravity = { 0, 9.81 };
+    const glm::vec2 m_gravity = { 0, 9.81 };
 };
 #endif;
