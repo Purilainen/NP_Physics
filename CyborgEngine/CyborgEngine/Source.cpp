@@ -253,12 +253,9 @@ int main()
 			};
 
 			p2.setPoints(points2, 5);
-<<<<<<< HEAD
 			Renderer::setColor(1, 1, 1, 0.5);;
 			
-            //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
-			//p2.getPoints();
 
 
             //if (glfwGetKey(window, GLFW_KEY_O))
@@ -266,33 +263,20 @@ int main()
 
             Renderer::drawCircle(testObj.getBody()->m_position.x, testObj.getBody()->m_position.y, .1f);
             
-=======
+
 			Renderer::setColor(1, 1, 1, 0.5);
 			
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
-			p2.getPoints();
->>>>>>> origin/master
-            
+
 
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
-            
-            //NP_Physics
-<<<<<<< HEAD
             world.update(a / 200);
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
 
-            
-			//Renderer::drawRectangle(0.25, 0.25, -0.25, -0.25);
-			//Renderer::drawRectangle(-0.5f, -0.5f, 0.5, 0.5);
-=======
-			
-			Renderer::drawPolygon(&p3, 0, 1);
-			Renderer::drawPolygon(&p2, 0, 0);
->>>>>>> origin/master
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);
