@@ -42,6 +42,11 @@ public:
 
     
     void setOrient(float orient) { m_orientation = orient; }
+
+	// Get and set different velocities to different bodies
+	glm::vec2 getVelocity(){ return m_velocity; }
+	void setVelocity(glm::vec2 velocity){ m_velocity = velocity; }
+
     void addForce(float forceX, float forceY);
 
 	NP_Body(NP_World world);

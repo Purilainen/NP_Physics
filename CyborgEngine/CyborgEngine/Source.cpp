@@ -279,6 +279,9 @@ int main()
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
+
+			// You can now add own velocity to different bodies
+			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() * glm::vec2(0, 1.5f));
             world.update(a / 5000);
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
