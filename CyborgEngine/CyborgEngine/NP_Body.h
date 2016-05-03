@@ -1,14 +1,15 @@
 #ifndef NP_BODY_H
 #define NP_BODY_H
 
-#include "glm/glm.hpp"
+#include "NP_Math.h"
 #include "NP_World.h"
 #include "Polygon.h"
 
 struct Collider 
 {
-    glm::vec2* points; //The points that determine the shape of the collider (4 points for a box)
-    glm::vec2 position;
+    glm::vec2 corner[4]; //The points that determine the shape of the collider (4 points for a box)
+    glm::vec2 position; //Origin
+    glm::vec2 axis[2]; //Two edges of the collider
     float rotation;
     float size = 1.0f;
 };
@@ -30,10 +31,17 @@ public:
     //addColliderFromPoly(polygon)
     void addBoxCollider(float size);
     void addCircleCollider(float radius);
-
+    void computeAxes(); //Compute axes for collider
+    bool overLaps1Way(NP_Body* otherBody);
+    bool overLaps(NP_Body* otherB) 
+    {
+        return overLaps1Way(otherB) && otherB->overLaps1Way(this);
+    }
 	void addColliderFromPoly(float size);
 
     glm::vec2 getPos() { return m_position; }
+    void setPos(glm::vec2 pos){ m_position = pos; }
+
     bool isStatic(bool value) { Static = value; }
     bool isDynamic(bool value){ Dynamic = value; }
     bool isKinematic(bool value) { Kinematic = value; }
@@ -58,8 +66,12 @@ public:
     glm::vec2 m_acceleration;
     glm::vec2 m_force;
     NP_World* m_world;
-    float m_mass = 10.0f;
+    float m_mass = 1.0f;
     
+    float inverseMass;
+    float inverseInertia;
+
+    float m_restitution;
     float m_angularVelocity;
     float m_torque;
     float m_orientation;

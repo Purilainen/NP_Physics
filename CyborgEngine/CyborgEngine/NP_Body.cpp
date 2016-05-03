@@ -1,9 +1,11 @@
 #include "NP_Body.h"
 #include <Windows.h>
-
+#include <iostream>
 void NP_Body::update(float deltaTime)
 {
+    m_collider.position = m_position;
 
+    //std::cout << m_collider.position.x;
     if (Static)
     {
         //Don't update anything?
@@ -77,21 +79,76 @@ void NP_Body::update(float deltaTime)
 void NP_Body::addBoxCollider(float size)
 {
     //TODO : Support for rectangles and not only squares
-    glm::vec2 points[] =
-    {
-        glm::vec2(-0.25, 0.25)*size,
-        glm::vec2(-0.25, -0.25)*size,
-        glm::vec2(0.25, -0.25)*size,
-        glm::vec2(0.25, 0.25)*size
-    };
+    //NOTE: Use the same points that are used when making a rectangle poly
 
-    m_collider.points = points;
+    m_collider.corner[0] ={glm::vec2(-0.25, 0.25)*size};
+    m_collider.corner[1] = {glm::vec2(-0.25, -0.25)*size};
+    m_collider.corner[2] = {glm::vec2(0.25, -0.25)*size};
+    m_collider.corner[2] = {glm::vec2(0.25, 0.25)*size};
+        
+    m_collider.position = m_position;
     m_collider.size = size;
+    computeAxes();
 }
 
 void NP_Body::addCircleCollider(float radius)
 {
     
+}
+
+
+void NP_Body::computeAxes()
+{
+    //Updates the axes after the corners move.
+    //Assumes the corners actually form a rectangle
+    m_collider.axis[0] = m_collider.corner[1] - m_collider.corner[0];
+    m_collider.axis[1] = m_collider.corner[3] - m_collider.corner[0];
+
+    //Make length of each axis 1/edge so we know that
+    //any dot product must be less than 1 to fall within the edge
+    // DUNNO?!
+    for (size_t i = 0; i < 2; ++i)
+    {
+        m_collider.axis[i] /= m_collider.axis[i] * m_collider.axis[i]; //squared
+        m_collider.position[i] = glm::dot(m_collider.corner[0], m_collider.axis[i]);
+    }
+
+}
+
+
+bool NP_Body::overLaps1Way(NP_Body* otherBody)
+{
+    for (size_t i = 0; i < 2; i++)
+    {
+        float t = glm::dot(m_collider.corner[0], m_collider.axis[i]);
+
+        float tMin = t;
+        float tMax = t;
+
+        for (size_t j = 1; j < 4; ++j)
+        {
+            
+            t = glm::dot(otherBody->m_collider.corner[j], m_collider.axis[i]);
+
+            if (t < tMin)
+            {
+                tMin = t;
+            }
+            else if (t > tMax)
+            {
+                tMax = t;
+            }
+        }
+
+        if ((tMin > 1 + m_collider.position[i]) || (tMax < m_collider.position[i]))
+        {
+            //No intersection in this dimension
+            //Boxes cant overlap
+            return false;
+        }
+    }
+    //Boxes overlap
+    return true;
 }
 
 void NP_Body::addColliderFromPoly(float size)
@@ -127,10 +184,10 @@ void NP_Body::addForce(float forceX, float forceY)
     m_force.y = forceY;
 }
 
-NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(&world), m_velocity(0), m_position(0)
+NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(&world), m_velocity(0), m_position(0), m_restitution(0.2f)
 {
     //Bodies are dynamic by default
-   
+    inverseMass = 1 / m_mass;
 }
 
 NP_Body::~NP_Body()

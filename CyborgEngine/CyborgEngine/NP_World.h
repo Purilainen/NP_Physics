@@ -2,8 +2,10 @@
 #define NP_WORLD_H
 
 #include "NP_Object.h"
+#include "NP_CollisionInfo.h"
 #include <vector>
 class NP_Object;
+class NP_CollisionInfo;
 class NP_World
 {
 public:
@@ -17,9 +19,10 @@ public:
     void integrateForces(NP_Object* obj, float deltaTime);
     void integratePosition(NP_Object* obj, float deltaTime);
 
-    
+
 private:
     std::vector<NP_Object*> m_objects;
+    std::vector<NP_CollisionInfo> contacts;
     const glm::vec2 m_gravity = { 0, 9.81 };
 };
 #endif;

@@ -123,6 +123,9 @@ int main()
 	// Adding objects to the wold
     world.addObject(&testObj);
 	world.addObject(&testObj2);
+
+    testObj2.getBody()->setPos(glm::vec2(0.5f, 0.f));
+    testObj.getBody()->setPos(glm::vec2(-0.5f, 0.f));
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -252,10 +255,10 @@ int main()
 			Polygon p3;
 			glm::vec2 points3[] =
 			{
-				glm::vec2(-0.5, 0.25),
-				glm::vec2(-0.5, -0.25),
-				glm::vec2(0.5, -0.25),
-				glm::vec2(0.5, 0.25)
+				glm::vec2(-0.25, 0.25),
+				glm::vec2(-0.25, -0.25),
+				glm::vec2(0.25, -0.25),
+				glm::vec2(0.25, 0.25)
 			};
 
 			p2.setPoints(points2, 4);
@@ -267,7 +270,9 @@ int main()
             //if (glfwGetKey(window, GLFW_KEY_O))
             //testObj.getBody()->addForce(0, 9.81);
 
-            //Renderer::drawCircle(testObj.getBody()->m_position.x, testObj.getBody()->m_position.y, .1f);
+            //testObj2.getBody()->addForce(0, 9.81);
+
+            
             
 
 			Renderer::setColor(1, 1, 1, 0.5);
@@ -275,17 +280,19 @@ int main()
             //p3.setScale(2.0f);
             p3.setPoints(points3, 4);
 
-
+            
+            
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
 
 			// You can now add own velocity to different bodies
-			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() * glm::vec2(0, 1.5f));
-            world.update(a / 5000);
+			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(-1.060f, 1.f));
+
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
-
+            world.update(a / 5000);
+            
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);

@@ -51,6 +51,9 @@
     <ClCompile Include="NP_World.cpp">
       <Filter>NP_Physics</Filter>
     </ClCompile>
+    <ClCompile Include="NP_CollisionInfo.cpp">
+      <Filter>NP_Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
@@ -81,6 +84,12 @@
       <Filter>NP_Physics</Filter>
     </ClInclude>
     <ClInclude Include="NP_World.h">
+      <Filter>NP_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_CollisionInfo.h">
+      <Filter>NP_Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NP_Math.h">
       <Filter>NP_Physics</Filter>
     </ClInclude>
   </ItemGroup>

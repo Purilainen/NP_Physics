@@ -73,6 +73,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="common\shader.cpp" />
     <ClCompile Include="NP_Body.cpp" />
+    <ClCompile Include="NP_CollisionInfo.cpp" />
     <ClCompile Include="NP_Object.cpp" />
     <ClCompile Include="NP_World.cpp" />
     <ClCompile Include="PointSprite.cpp" />
@@ -86,6 +87,8 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="common\shader.hpp" />
     <ClInclude Include="NP_Body.h" />
+    <ClInclude Include="NP_CollisionInfo.h" />
+    <ClInclude Include="NP_Math.h" />
     <ClInclude Include="NP_Object.h" />
     <ClInclude Include="NP_World.h" />
     <ClInclude Include="PointSprite.h" />
