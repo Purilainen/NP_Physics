@@ -37,12 +37,7 @@ void NP_World::update(float deltaTime)
         }
     }
 
-    //Solve collisions - apply impulse
-    for (size_t i = 0; i < contacts.size(); ++i)
-    {
-        contacts[i].ApplyImpulse();
-        
-    }
+   
 
 
     // Integrate forces
@@ -50,6 +45,18 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < m_objects.size(); ++i)
         integrateForces(m_objects[i], deltaTime);
 
+    // Init collision
+    for (size_t i = 0; i < contacts.size(); ++i)
+    {
+        contacts[i].Initialize();
+
+    }
+    //Solve collisions - apply impulse
+    for (size_t i = 0; i < contacts.size(); ++i)
+    {
+        contacts[i].ApplyImpulse();
+
+    }
 
     // Integrate velocities
     for (size_t i = 0; i < m_objects.size(); ++i)
@@ -86,7 +93,7 @@ void NP_World::integrateVelocity(NP_Object* obj, float deltaTime)
 void NP_World::integrateForces(NP_Object* obj, float deltaTime)
 {
     // velocity += force * (inverseMass) + gravity * dt
-    obj->getBody()->m_velocity += (obj->getBody()->m_force * obj->getBody()->m_mass - m_gravity) * deltaTime;
+    obj->getBody()->m_velocity += (obj->getBody()->m_force * obj->getBody()->inverseMass - gravity) * deltaTime;
 
     // angularVelocity += torque * inverseInertia * dt
     obj->getBody()->m_angularVelocity += obj->getBody()->m_torque * deltaTime;
