@@ -41,6 +41,7 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < contacts.size(); ++i)
     {
         contacts[i].ApplyImpulse();
+        
     }
 
 

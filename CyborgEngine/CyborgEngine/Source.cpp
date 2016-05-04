@@ -129,6 +129,8 @@ int main()
     testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
     testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
     testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
+
+    testObj.getBody()->setVelocity(glm::vec2(-5.0f, 0.f));
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -299,13 +301,13 @@ int main()
             testObj3.bindPolygon(&p4);
 
 			// You can now add own velocity to different bodies
-			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
-            testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
+			//testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
+            //testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
 
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
             Renderer::drawPolygon(&p4, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);
-            world.update(a / 5000);
+            world.update(a / 500);
             
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";

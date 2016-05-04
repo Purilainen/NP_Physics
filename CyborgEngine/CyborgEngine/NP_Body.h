@@ -7,13 +7,45 @@
 
 struct Collider 
 {
+    int vertexCount = 4;
     glm::vec2 corner[4]; //The points that determine the shape of the collider (4 points for a box)
     glm::vec2 position; //Origin
     glm::vec2 axis[2]; //Two edges of the collider
     glm::vec2 max;
     glm::vec2 min;
+    
     float rotation;
     float size = 1.0f;
+    glm::vec2 normals[4];
+    glm::mat2 u;
+
+
+    glm::vec2 getSupport(const glm::vec2& direction)
+    {
+        float bestProjection = -FLT_MAX;
+        glm::vec2 bestVertex;
+
+        for (size_t i = 0; i < corner->length(); ++i)
+        {
+            glm::vec2 v = corner[i];
+            float projection = Dot(v, direction);
+
+            if (projection > bestProjection)
+            {
+                bestVertex = v;
+                bestProjection = projection;
+            }
+        }
+        return bestVertex;
+    }
+
+    void setOrient(float radians)
+    {
+        float c = glm::cos(radians);
+        float s = glm::sin(radians);
+
+        u = glm::mat2(c, -s, s, c);
+    }
 };
 
 class NP_World;
@@ -51,7 +83,7 @@ public:
     //checkCollision()
 
     
-    void setOrient(float orient) { m_orientation = orient; }
+    void setOrient(float orient) { m_orientation = orient; m_collider.setOrient(m_orientation); }
 
 	// Get and set different velocities to different bodies
 	glm::vec2 getVelocity(){ return m_velocity; }
