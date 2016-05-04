@@ -10,6 +10,8 @@ struct Collider
     glm::vec2 corner[4]; //The points that determine the shape of the collider (4 points for a box)
     glm::vec2 position; //Origin
     glm::vec2 axis[2]; //Two edges of the collider
+    glm::vec2 max;
+    glm::vec2 min;
     float rotation;
     float size = 1.0f;
 };

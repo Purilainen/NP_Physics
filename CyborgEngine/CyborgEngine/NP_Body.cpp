@@ -85,7 +85,10 @@ void NP_Body::addBoxCollider(float size)
     m_collider.corner[1] = {glm::vec2(-0.25, -0.25)*size};
     m_collider.corner[2] = {glm::vec2(0.25, -0.25)*size};
     m_collider.corner[2] = {glm::vec2(0.25, 0.25)*size};
-        
+    
+    m_collider.max = glm::vec2(0.25, 0.25);
+    m_collider.min = glm::vec2(-0.25, -0.25);
+
     m_collider.position = m_position;
     m_collider.size = size;
     computeAxes();

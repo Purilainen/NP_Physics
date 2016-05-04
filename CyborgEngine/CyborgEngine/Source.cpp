@@ -107,25 +107,28 @@ int main()
 	NP_World world;
 
 	// Creating bodies to the world
-    NP_Body testBody(world), testBody2(world);
+    NP_Body testBody(world), testBody2(world), testBody3(world);
 
 	// 
     testBody.addBoxCollider(1);
 	testBody2.addBoxCollider(1);
-
+    testBody3.addBoxCollider(1);
 	// Creating objects
-    NP_Object testObj, testObj2;
+    NP_Object testObj, testObj2, testObj3;
 
 	// Binding objects to bodies
     testObj.bindBody(&testBody);
 	testObj2.bindBody(&testBody2);
+    testObj3.bindBody(&testBody3);
 
 	// Adding objects to the wold
     world.addObject(&testObj);
 	world.addObject(&testObj2);
+    world.addObject(&testObj3);
 
-    testObj2.getBody()->setPos(glm::vec2(0.5f, 0.f));
-    testObj.getBody()->setPos(glm::vec2(-0.5f, 0.f));
+    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
+    testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
+    testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -266,7 +269,15 @@ int main()
 			
             p3.setPoints(points3, 4);
 
-
+            Polygon p4;
+            glm::vec2 points4[] =
+            {
+                glm::vec2(-0.25, 0.25),
+                glm::vec2(-0.25, -0.25),
+                glm::vec2(0.25, -0.25),
+                glm::vec2(0.25, 0.25)
+            };
+            p4.setPoints(points4, 4);
             //if (glfwGetKey(window, GLFW_KEY_O))
             //testObj.getBody()->addForce(0, 9.81);
 
@@ -285,12 +296,15 @@ int main()
             //NP_Physics
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
+            testObj3.bindPolygon(&p4);
 
 			// You can now add own velocity to different bodies
-			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(-1.060f, 1.f));
+			testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
+            testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
 
             Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
             Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
+            Renderer::drawPolygon(&p4, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);
             world.update(a / 5000);
             
 		}
