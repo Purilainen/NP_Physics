@@ -1,6 +1,7 @@
 #include "NP_Body.h"
 #include <Windows.h>
 #include <iostream>
+
 void NP_Body::update(float deltaTime)
 {
     m_collider.position = m_position;
@@ -112,20 +113,23 @@ void NP_Body::addCircleCollider(float radius)
 
 void NP_Body::computeAxes()
 {
-    //Updates the axes after the corners move.
-    //Assumes the corners actually form a rectangle
-    m_collider.axis[0] = m_collider.corner[1] - m_collider.corner[0];
-    m_collider.axis[1] = m_collider.corner[3] - m_collider.corner[0];
+    // The axes we want to test are the normals of each shape's edges
 
-    //Make length of each axis 1/edge so we know that
-    //any dot product must be less than 1 to fall within the edge
-    // DUNNO?!
-    for (size_t i = 0; i < 2; ++i)
+    // Loop over vertices
+    for (size_t i = 0; i < m_collider.corner->length(); ++i)
     {
-        m_collider.axis[i] /= m_collider.axis[i] * m_collider.axis[i]; //squared
-        m_collider.position[i] = glm::dot(m_collider.corner[0], m_collider.axis[i]);
-    }
+        // Get current vertex
+        glm::vec2 p1 = m_collider.corner[i];
+        // Get next vertex
+        glm::vec2 p2 = m_collider.corner[i + 1 == m_collider.corner->length() ? 0 : i + 1];
+        // Subtract the two to get the edge vector
+        glm::vec2 edge = p1 - p2;
+        // Get either perpendicular vector
+        glm::vec2 leftHandNormal(edge.x, -edge.y);
+        glm::vec2 rightHandNormal(-edge.x, edge.y);
 
+        m_collider.axes[i] = rightHandNormal; // Normalize - Or right handed?
+    }
 }
 
 
@@ -133,7 +137,7 @@ bool NP_Body::overLaps1Way(NP_Body* otherBody)
 {
     for (size_t i = 0; i < 2; i++)
     {
-        float t = glm::dot(m_collider.corner[0], m_collider.axis[i]);
+        float t = glm::dot(m_collider.corner[0], m_collider.axes[i]);
 
         float tMin = t;
         float tMax = t;
@@ -141,7 +145,7 @@ bool NP_Body::overLaps1Way(NP_Body* otherBody)
         for (size_t j = 1; j < 4; ++j)
         {
             
-            t = glm::dot(otherBody->m_collider.corner[j], m_collider.axis[i]);
+            t = glm::dot(otherBody->m_collider.corner[j], m_collider.axes[i]);
 
             if (t < tMin)
             {

@@ -126,11 +126,11 @@ int main()
 	world.addObject(&testObj2);
     world.addObject(&testObj3);
 
-    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.0f));
+    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
     testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
     testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
 
-    //testObj.getBody()->setOrient(180.f);
+    
     testObj.getBody()->setVelocity(glm::vec2(-5.0f, 0.f));
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
@@ -300,7 +300,7 @@ int main()
             testObj.bindPolygon(&p3);
 			testObj2.bindPolygon(&p2);
             testObj3.bindPolygon(&p4);
-
+            testObj.setOrient(glm::radians(45.f) * a);
 			// You can now add own velocity to different bodies
 			//testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
             //testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));

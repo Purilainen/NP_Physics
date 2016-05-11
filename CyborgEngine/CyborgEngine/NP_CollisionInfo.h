@@ -17,7 +17,8 @@ public:
     void InfiniteMassCorrection();
     float FindAxisLeastPenetration(glm::uint32 *faceIndex, NP_Body* A, NP_Body* B);
     void FindIncidentFace(glm::vec2* v, NP_Body* refBody, NP_Body* incPoly, int refIndex);
-
+    bool overlap(glm::vec2 projection1, glm::vec2 projection2);
+    float getOverlap(glm::vec2 projection1, glm::vec2 projection2);
     int Clip(glm::vec2 n, float c, glm::vec2 *face);
 
     NP_Body *m_aBody;

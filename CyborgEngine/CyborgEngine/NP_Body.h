@@ -5,12 +5,13 @@
 #include "NP_World.h"
 #include "Polygon.h"
 
+
 struct Collider 
 {
     int vertexCount = 4;
     glm::vec2 corner[4]; //The points that determine the shape of the collider (4 points for a box)
     glm::vec2 position; //Origin
-    glm::vec2 axis[2]; //Two edges of the collider
+    glm::vec2 axes[4]; // size == vert count
     glm::vec2 max;
     glm::vec2 min;
     
@@ -44,8 +45,32 @@ struct Collider
         float c = glm::cos(radians);
         float s = glm::sin(radians);
 
-        u = glm::mat2(c, -s, s, c);
+        u = glm::mat2(c, -s, s, c); 
     }
+
+
+
+    glm::vec2 projectToAxis(glm::vec2 axis)
+    {
+        // Project to normalized axis
+        float min = Dot(axis, corner[0]);
+        float max = min;
+        for (size_t i = 1; i < corner->length(); ++i)
+        {
+            float p = Dot(axis, corner[i]);
+            if (p < min)
+            {
+                min = p;
+            }
+            else if (p > max)
+            {
+                max = p;
+            }
+        }
+        glm::vec2 projection(min, max);
+        return projection;
+    }
+
 };
 
 class NP_World;

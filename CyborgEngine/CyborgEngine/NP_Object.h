@@ -18,6 +18,7 @@ public:
 
 	void bindPolygon(Polygon *polygon);
     void bindBody(NP_Body *body);
+    void setOrient(float orient);
 
     NP_Body* getBody() { return m_body; }
 

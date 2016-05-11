@@ -1,6 +1,8 @@
 #include "NP_World.h"
 #include <Windows.h>
 #include <iostream>
+#include "glm/gtc/matrix_transform.hpp"
+
 NP_World::NP_World()
 {
 }
@@ -23,7 +25,7 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
         NP_Body* A = m_objects[i]->getBody();
-
+        updateOrientation(m_objects[i]);
         for (size_t j = 0; j < m_objects.size(); ++j)
         {
             NP_Body* B = m_objects[j]->getBody();
@@ -31,6 +33,7 @@ void NP_World::update(float deltaTime)
             if (A->inverseMass == 0 && B->inverseMass == 0)
                 continue;
             NP_CollisionInfo cI(A, B);
+            updateOrientation(m_objects[j]);
             cI.Solve(); //Do collision thing here AABBvsAABB / PolyVsPoly
             if (cI.contact_count)
                 contacts.emplace_back(cI);
@@ -38,8 +41,6 @@ void NP_World::update(float deltaTime)
     }
 
    
-
-
     // Integrate forces
     // - Go through objects - calc forces (calc acceleration)
     for (size_t i = 0; i < m_objects.size(); ++i)
@@ -99,4 +100,26 @@ void NP_World::integrateForces(NP_Object* obj, float deltaTime)
     obj->getBody()->m_angularVelocity += obj->getBody()->m_torque * deltaTime;
 }
 
+void NP_World::updateOrientation(NP_Object* obj)
+{
+    NP_Body* B = obj->getBody();
+
+    T = glm::translate(glm::mat4(), glm::vec3(B->getPos().x, B->getPos().y, 1.0f));
+    R1 = glm::rotate(glm::mat4(), B->m_orientation, glm::vec3(0.0f, 0.0f, 1.0f));
+    T_1 = glm::translate(glm::mat4(), glm::vec3(-B->getPos().x, -B->getPos().y, 1.0f));
+    muunnos = T*R1*T_1;
+
+    
+     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2 , B->getPos().y + B->m_collider.size / 2, 0.0f, 1.0f));
+     B->m_collider.corner[0] = glm::vec2(temp.x, temp.y);
+
+     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size / 2, B->getPos().y + B->m_collider.size / 2, 0.0f, 1.0f));
+     B->m_collider.corner[1] = glm::vec2(temp.x, temp.y);
+
+     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
+     B->m_collider.corner[2] = glm::vec2(temp.x, temp.y);
+
+     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
+     B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
+}
 

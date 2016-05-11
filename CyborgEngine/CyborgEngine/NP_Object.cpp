@@ -15,6 +15,12 @@ void NP_Object::bindBody(NP_Body *body)
     m_body = body;
 }
 
+void NP_Object::setOrient(float orient)
+{
+    m_body->setOrient(orient);
+    m_polygon->setRotation(orient);
+}
+
 NP_Object::~NP_Object()
 {
 }

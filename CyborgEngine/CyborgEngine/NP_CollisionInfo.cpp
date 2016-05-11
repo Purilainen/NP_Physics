@@ -15,6 +15,85 @@ NP_CollisionInfo::~NP_CollisionInfo()
 
 void NP_CollisionInfo::Solve()
 {
+    // Pseudo stuff
+
+    // 1st Get axes for both bodies
+    //http://www.dyn4j.org/2010/01/sat/
+    // 2nd loop over axes
+    bool TEST = true;
+    if (TEST)
+    {
+        contact_count = 0;
+        float overl = FLT_MAX;
+        glm::vec2 smallest;
+        NP_Body *A = m_aBody;
+        NP_Body *B = m_bBody;
+
+        //Loop over  A axes
+        for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
+        {
+            glm::vec2 axis = A->m_collider.axes[i];
+            // Project both shapes onto the axis
+            glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
+            glm::vec2 p2 = B->m_collider.projectToAxis(axis);
+            // Check if projections overlap
+            if (!overlap(p1, p2))
+            {
+                contact_count = 0;
+                //Shapes do not overlap
+                return;
+            }
+            else
+            {
+                contact_count = 1;
+                // Get overlap
+                float o = getOverlap(p1, p2);
+                // Check for minimum
+                if (o < overl)
+                {
+                    // Then set this to smallest
+                    overl = o;
+                    smallest = axis;
+
+                }
+                
+            }
+        }
+        //Loop over B axes
+        for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
+        {
+            glm::vec2 axis = A->m_collider.axes[i];
+            // Project both shapes onto the axis
+            glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
+            glm::vec2 p2 = B->m_collider.projectToAxis(axis);
+            // Check if projections overlap
+            if (!overlap(p1, p2))
+            {
+                //Shapes do not overlap
+                contact_count = 0;
+                return;
+            }
+            else
+            {
+                contact_count = 1;
+                // Get overlap
+                float o = getOverlap(p1, p2);
+                // Check for minimum
+                if (o < overl)
+                {
+                    // Then set this to smallest
+                    overl = o;
+                    smallest = axis;
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+
     // AABB vs AABB // polyTopoly here
     // http://gamedevelopment.tutsplus.com/tutorials/create-custom-2d-physics-engine-aabb-circle-impulse-resolution--gamedev-6331
     bool AABB = false;
@@ -33,6 +112,8 @@ void NP_CollisionInfo::Solve()
         // Calc half extent along x axis for each obj
         float a_extent = (aboxMax.x - aboxMin.x) / 2;
         float b_extent = (bboxMax.x - bboxMin.x) / 2;
+
+        
 
         // Calc overlap on x axis
         float x_overlap = a_extent + b_extent - glm::abs(n.x);
@@ -71,7 +152,7 @@ void NP_CollisionInfo::Solve()
         }
     }
 
-    bool PolyToPoly = true;
+    bool PolyToPoly = false;
     if (PolyToPoly)
     {
         NP_Body* A = m_aBody;
@@ -80,13 +161,13 @@ void NP_CollisionInfo::Solve()
         //Check for a seperating axis with A's face planes
         glm::uint32 faceA;
         float penetrationA = FindAxisLeastPenetration(&faceA, A, B);
-        if (penetrationA >= 0.0f)
-            return;
+        //if (penetrationA >= 0.0f)
+        //    return;
 
         glm::uint32 faceB;
         float penetrationB = FindAxisLeastPenetration(&faceB, B, A);
-        if (penetrationB >= 0.0f)
-            return;
+        //if (penetrationB >= 0.0f)
+        //    return;
 
         glm::uint32 referenceIndex;
         bool flip; // Always point from a to b
@@ -336,6 +417,37 @@ void NP_CollisionInfo::FindIncidentFace(glm::vec2* v, NP_Body* refBody, NP_Body*
     v[0] = incBody->m_collider.u * incBody->m_collider.corner[incidentFace] + incBody->m_position;
     incidentFace = incidentFace + 1 >= (int)incBody->m_collider.vertexCount ? 0 : incidentFace + 1;
     v[1] = incBody->m_collider.u * incBody->m_collider.corner[incidentFace] + incBody->m_position;
+}
+
+bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
+{
+    if (projection1.y >= projection2.x)
+    {
+        return true;
+    }
+    else if (projection1.x >= projection2.y)
+    {
+        return true;
+    }
+    else
+        false;
+}
+
+float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)
+{
+    // 
+    if (projection1.y > projection2.x)
+    {
+        return projection1.y - projection2.x;
+    }
+    else if (projection1.x > projection2.y)
+    {
+        return projection1.y - projection2.x;
+    }
+    else
+    {
+        //PROBLEM WITH OVERLAP
+    }
 }
 
 int NP_CollisionInfo::Clip(glm::vec2 n, float c, glm::vec2 *face)
