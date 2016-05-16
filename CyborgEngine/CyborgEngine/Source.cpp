@@ -102,36 +102,64 @@ int main()
 	int scene = 0;
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- START
-	
-	// Creating physics world
-	NP_World world;
-
-	// Creating bodies to the world
+    // Creating physics world
+    NP_World world;
+    // Creating objects
+    NP_Object testObj, testObj2, testObj3;
+    // Creating bodies to the world
     NP_Body testBody(world), testBody2(world), testBody3(world);
 
-	// 
-    testBody.addBoxCollider(1);
-	testBody2.addBoxCollider(1);
-    testBody3.addBoxCollider(1);
-	// Creating objects
-    NP_Object testObj, testObj2, testObj3;
-
-	// Binding objects to bodies
+    // Binding objects to bodies
     testObj.bindBody(&testBody);
-	testObj2.bindBody(&testBody2);
+    testObj2.bindBody(&testBody2);
     testObj3.bindBody(&testBody3);
+
+    testBody.addBoxCollider(1);
+    testBody2.addBoxCollider(1);
+    testBody3.addBoxCollider(1);
+
+    testObj3.getBody()->setPos(glm::vec2(-0.5f, 0.f));
+    testObj2.getBody()->setPos(glm::vec2(0.0f, 1.f));
+    testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
+    // 
+  
+
+    Polygon poly1, poly2, poly3;
+    glm::vec2 pointsp123[] =
+    {
+        // Box collider size
+        glm::vec2(-0.25, 0.25),
+        glm::vec2(-0.25, -0.25),
+        glm::vec2(0.25, -0.25),
+        glm::vec2(0.25, 0.25)
+    };
+    glm::vec2 pointsp[] =
+    {
+        // Box collider size
+        glm::vec2(-0.5, 0.5),
+        glm::vec2(-0.5, -0.5),
+        glm::vec2(0.5, -0.5),
+        glm::vec2(0.5, 0.5)
+    };
+    poly1.setPoints(pointsp, 4);
+    poly2.setPoints(pointsp, 4);
+    poly3.setPoints(pointsp, 4);
+
+
+
+    testObj.bindPolygon(&poly1);
+    testObj2.bindPolygon(&poly2);
+    testObj3.bindPolygon(&poly3);
 
 	// Adding objects to the wold
     world.addObject(&testObj);
 	world.addObject(&testObj2);
     world.addObject(&testObj3);
 
-    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
-    testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
-    testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
-
+   
     
-    testObj.getBody()->setVelocity(glm::vec2(-5.0f, 0.f));
+    testObj.getBody()->setVelocity(glm::vec2(-5.0f, .0f));
+    testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -241,73 +269,31 @@ int main()
 		{
 			
 
-           	// Physics test scene
-			Polygon p2;
-			glm::vec2 points2[]=
-			{
-				/*glm::vec2(-0.375, 0.125),
-				glm::vec2(-0.25, -0.25),
-				glm::vec2(0.25, -0.25),
-				glm::vec2(0.375, 0.125),
-				glm::vec2(0.0, 0.375)*/
-
-				// Box collider size
-				glm::vec2(-0.25, 0.25),
-				glm::vec2(-0.25, -0.25),
-				glm::vec2(0.25, -0.25),
-				glm::vec2(0.25, 0.25)
-			};
-
-			Polygon p3;
-			glm::vec2 points3[] =
-			{
-				glm::vec2(-0.25, 0.25),
-				glm::vec2(-0.25, -0.25),
-				glm::vec2(0.25, -0.25),
-				glm::vec2(0.25, 0.25)
-			};
-
-			p2.setPoints(points2, 4);
 			Renderer::setColor(1, 1, 1, 0.5);;
-			
-            p3.setPoints(points3, 4);
-
-            Polygon p4;
-            glm::vec2 points4[] =
-            {
-                glm::vec2(-0.25, 0.25),
-                glm::vec2(-0.25, -0.25),
-                glm::vec2(0.25, -0.25),
-                glm::vec2(0.25, 0.25)
-            };
-            p4.setPoints(points4, 4);
+;
             //if (glfwGetKey(window, GLFW_KEY_O))
             //testObj.getBody()->addForce(0, 9.81);
 
             //testObj2.getBody()->addForce(0, 9.81);
 
             
-            
+        
 
-			Renderer::setColor(1, 1, 1, 0.5);
-			
-            //p3.setScale(2.0f);
-            p3.setPoints(points3, 4);
 
             
             
             //NP_Physics
-            testObj.bindPolygon(&p3);
-			testObj2.bindPolygon(&p2);
-            testObj3.bindPolygon(&p4);
-            testObj.setOrient(glm::radians(45.f) * a);
+            /*testObj.bindPolygon(&p3);
+            testObj2.bindPolygon(&p2);
+            testObj3.bindPolygon(&p4);*/
+            
 			// You can now add own velocity to different bodies
 			//testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
             //testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
 
-            Renderer::drawPolygon(&p3, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
-            Renderer::drawPolygon(&p2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
-            Renderer::drawPolygon(&p4, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);
+            Renderer::drawPolygon(&poly1, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
+            Renderer::drawPolygon(&poly2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
+            Renderer::drawPolygon(&poly3, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);
             world.update(a / 500);
             
 		}

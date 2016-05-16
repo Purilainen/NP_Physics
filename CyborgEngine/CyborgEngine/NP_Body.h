@@ -45,7 +45,8 @@ struct Collider
         float c = glm::cos(radians);
         float s = glm::sin(radians);
 
-        u = glm::mat2(c, -s, s, c); 
+        u = glm::mat2(c, -s, s, c);
+        rotation = radians;
     }
 
 
@@ -54,6 +55,7 @@ struct Collider
     {
         // Project to normalized axis
         float min = Dot(axis, corner[0]);
+        
         float max = min;
         for (size_t i = 1; i < corner->length(); ++i)
         {

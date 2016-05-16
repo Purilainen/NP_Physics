@@ -5,7 +5,6 @@
 void NP_Body::update(float deltaTime)
 {
     m_collider.position = m_position;
-
     //std::cout << m_collider.position.x;
     if (Static)
     {
@@ -81,6 +80,7 @@ void NP_Body::addBoxCollider(float size)
 {
     //TODO : Support for rectangles and not only squares
     //NOTE: Use the same points that are used when making a rectangle poly
+    m_collider.position = m_position;
 
     m_collider.corner[0] ={glm::vec2(-0.25, 0.25)*size};
     m_collider.corner[1] = {glm::vec2(-0.25, -0.25)*size};
@@ -99,10 +99,11 @@ void NP_Body::addBoxCollider(float size)
         glm::normalize(m_collider.normals[i]);
     }
 
+    m_collider.rotation = 0;
 
-    m_collider.position = m_position;
+    
     m_collider.size = size;
-    computeAxes();
+    //computeAxes();
 }
 
 void NP_Body::addCircleCollider(float radius)
@@ -128,7 +129,7 @@ void NP_Body::computeAxes()
         glm::vec2 leftHandNormal(edge.x, -edge.y);
         glm::vec2 rightHandNormal(-edge.x, edge.y);
 
-        m_collider.axes[i] = rightHandNormal; // Normalize - Or right handed?
+        m_collider.axes[i] = glm::normalize(leftHandNormal); // Normalize - Or right handed?
     }
 }
 

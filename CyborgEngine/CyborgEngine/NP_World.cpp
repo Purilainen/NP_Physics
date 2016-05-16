@@ -34,7 +34,7 @@ void NP_World::update(float deltaTime)
                 continue;
             NP_CollisionInfo cI(A, B);
             updateOrientation(m_objects[j]);
-            cI.Solve(); //Do collision thing here AABBvsAABB / PolyVsPoly
+            cI.Solve(); //Do collision check
             if (cI.contact_count)
                 contacts.emplace_back(cI);
         }
@@ -121,5 +121,6 @@ void NP_World::updateOrientation(NP_Object* obj)
 
      temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
      B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
+
 }
 

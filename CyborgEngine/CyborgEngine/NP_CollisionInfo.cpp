@@ -28,6 +28,9 @@ void NP_CollisionInfo::Solve()
         glm::vec2 smallest;
         NP_Body *A = m_aBody;
         NP_Body *B = m_bBody;
+        A->computeAxes();
+        B->computeAxes();
+
 
         //Loop over  A axes
         for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
@@ -39,22 +42,20 @@ void NP_CollisionInfo::Solve()
             // Check if projections overlap
             if (!overlap(p1, p2))
             {
-                contact_count = 0;
                 //Shapes do not overlap
                 return;
             }
             else
             {
-                contact_count = 1;
                 // Get overlap
                 float o = getOverlap(p1, p2);
                 // Check for minimum
                 if (o < overl)
                 {
                     // Then set this to smallest
-                    overl = o;
-                    smallest = axis;
-
+                    overl = o; // amount of overlapping
+                    //smallest = axis;
+                    normal = axis;
                 }
                 
             }
@@ -62,7 +63,7 @@ void NP_CollisionInfo::Solve()
         //Loop over B axes
         for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
         {
-            glm::vec2 axis = A->m_collider.axes[i];
+            glm::vec2 axis = B->m_collider.axes[i];
             // Project both shapes onto the axis
             glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
             glm::vec2 p2 = B->m_collider.projectToAxis(axis);
@@ -70,26 +71,26 @@ void NP_CollisionInfo::Solve()
             if (!overlap(p1, p2))
             {
                 //Shapes do not overlap
-                contact_count = 0;
                 return;
             }
             else
             {
-                contact_count = 1;
                 // Get overlap
                 float o = getOverlap(p1, p2);
                 // Check for minimum
                 if (o < overl)
                 {
                     // Then set this to smallest
-                    overl = o;
-                    smallest = axis;
+                    overl = o; // amount of overlapping
+                    //smallest = axis;
+                    normal = axis;
                     
-                }
-                
+                } 
             }
             
         }
+        contact_count++;
+        //normal = smallest;
         
         
     }
@@ -136,7 +137,7 @@ void NP_CollisionInfo::Solve()
                     if (n.x < 0)
                         normal = glm::vec2(-1, 0);
                     else
-                        normal = glm::vec2(0, 0);
+                        normal = glm::vec2(1, 0);
                     penetration = x_overlap;
                 }
                 else
@@ -421,16 +422,16 @@ void NP_CollisionInfo::FindIncidentFace(glm::vec2* v, NP_Body* refBody, NP_Body*
 
 bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
 {
-    if (projection1.y >= projection2.x)
+    if (projection1.y < projection2.x)
     {
         return true;
     }
-    else if (projection1.x >= projection2.y)
+    else if (projection1.x > projection2.y)
     {
         return true;
     }
     else
-        false;
+        return false;
 }
 
 float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)
