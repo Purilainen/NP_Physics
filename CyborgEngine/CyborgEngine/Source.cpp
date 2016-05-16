@@ -156,10 +156,20 @@ int main()
 	world.addObject(&testObj2);
     world.addObject(&testObj3);
 
+<<<<<<< HEAD
    
     
     testObj.getBody()->setVelocity(glm::vec2(-5.0f, .0f));
     testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
+=======
+    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
+    testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
+    testObj.getBody()->setPos(glm::vec2(1.0f, 0.f));
+
+    
+    testObj.getBody()->setVelocity(glm::vec2(-5.0f, 0.f));
+	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 0.f));
+>>>>>>> origin/master
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
