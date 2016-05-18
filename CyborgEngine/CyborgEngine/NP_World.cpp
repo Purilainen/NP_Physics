@@ -25,14 +25,16 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
         NP_Body* A = m_objects[i]->getBody();
-        updateOrientation(m_objects[i]);
-        for (size_t j = 0; j < m_objects.size(); ++j)
+        
+
+        for (size_t j = 1; j < m_objects.size(); ++j)
         {
             NP_Body* B = m_objects[j]->getBody();
 
             if (A->inverseMass == 0 && B->inverseMass == 0)
                 continue;
             NP_CollisionInfo cI(A, B);
+            updateOrientation(m_objects[i]);
             updateOrientation(m_objects[j]);
             cI.Solve(); //Do collision check
             if (cI.contact_count)
@@ -122,5 +124,6 @@ void NP_World::updateOrientation(NP_Object* obj)
      temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
      B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
 
+     B->computeAxes();
 }
 

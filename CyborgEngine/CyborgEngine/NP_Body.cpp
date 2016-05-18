@@ -82,10 +82,11 @@ void NP_Body::addBoxCollider(float size)
     //NOTE: Use the same points that are used when making a rectangle poly
     m_collider.position = m_position;
 
-    m_collider.corner[0] ={glm::vec2(-0.25, 0.25)*size};
-    m_collider.corner[1] = {glm::vec2(-0.25, -0.25)*size};
+    m_collider.corner[0] = { glm::vec2(-0.25, 0.25)*size };
+    m_collider.corner[1] ={glm::vec2(0.25, 0.25)*size};
     m_collider.corner[2] = {glm::vec2(0.25, -0.25)*size};
-    m_collider.corner[2] = {glm::vec2(0.25, 0.25)*size};
+    m_collider.corner[3] = {glm::vec2(-0.25, -0.25)*size};
+    
     
     m_collider.max = glm::vec2(0.25, 0.25);
     m_collider.min = glm::vec2(-0.25, -0.25);
@@ -99,9 +100,7 @@ void NP_Body::addBoxCollider(float size)
         glm::normalize(m_collider.normals[i]);
     }
 
-    m_collider.rotation = 0;
-
-    
+    m_collider.rotation = m_orientation;
     m_collider.size = size;
     //computeAxes();
 }

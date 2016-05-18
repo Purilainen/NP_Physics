@@ -114,18 +114,14 @@ int main()
     testObj2.bindBody(&testBody2);
     testObj3.bindBody(&testBody3);
 
-    testBody.addBoxCollider(1);
-    testBody2.addBoxCollider(1);
-    testBody3.addBoxCollider(1);
+    testBody.addBoxCollider(0.5f);
+    testBody2.addBoxCollider(0.5f);
+    testBody3.addBoxCollider(0.5f);
 
-    testObj3.getBody()->setPos(glm::vec2(-0.5f, 0.f));
-    testObj2.getBody()->setPos(glm::vec2(0.0f, 1.f));
-    testObj.getBody()->setPos(glm::vec2(0.0f, 0.f));
-    // 
   
 
     Polygon poly1, poly2, poly3;
-    glm::vec2 pointsp123[] =
+    glm::vec2 pointsp[] =
     {
         // Box collider size
         glm::vec2(-0.25, 0.25),
@@ -133,7 +129,7 @@ int main()
         glm::vec2(0.25, -0.25),
         glm::vec2(0.25, 0.25)
     };
-    glm::vec2 pointsp[] =
+    glm::vec2 pointsp123[] =
     {
         // Box collider size
         glm::vec2(-0.5, 0.5),
@@ -156,20 +152,16 @@ int main()
 	world.addObject(&testObj2);
     world.addObject(&testObj3);
 
-<<<<<<< HEAD
-   
-    
-    testObj.getBody()->setVelocity(glm::vec2(-5.0f, .0f));
-    testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
-=======
     testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
-    testObj2.getBody()->setPos(glm::vec2(0.0f, -1.f));
+    testObj2.getBody()->setPos(glm::vec2(0.0f, 0.75f));
     testObj.getBody()->setPos(glm::vec2(1.0f, 0.f));
 
     
-    testObj.getBody()->setVelocity(glm::vec2(-5.0f, 0.f));
-	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 0.f));
->>>>>>> origin/master
+    testObj.getBody()->setVelocity(glm::vec2(-20.0f, 1.f));
+	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 1.f));
+    //testObj.getBody()->m_orientation = glm::radians(45.f);
+    //testObj3.getBody()->m_orientation = glm::radians(-45.f);
+
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
 	do{
@@ -300,12 +292,31 @@ int main()
 			// You can now add own velocity to different bodies
 			//testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
             //testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
-
-            Renderer::drawPolygon(&poly1, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
-            Renderer::drawPolygon(&poly2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
-            Renderer::drawPolygon(&poly3, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);
-            world.update(a / 500);
             
+
+            //Renderer::drawPolygon(&poly1, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
+            /*Renderer::drawPolygon(&poly2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
+            Renderer::drawPolygon(&poly3, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);*/
+
+            Renderer::drawPolygon(&poly1, testObj.getBody()->m_collider.position.x, testObj.getBody()->m_collider.position.y);
+            Renderer::drawPolygon(&poly2, testObj2.getBody()->m_collider.position.x, testObj2.getBody()->m_collider.position.y);
+            Renderer::drawPolygon(&poly3, testObj3.getBody()->m_collider.position.x, testObj3.getBody()->m_collider.position.y);
+
+            Renderer::drawCircle(testObj.getBody()->m_collider.corner[0].x, testObj.getBody()->m_collider.corner[0].y, 0.01f);
+            Renderer::drawCircle(testObj.getBody()->m_collider.corner[1].x, testObj.getBody()->m_collider.corner[1].y, 0.01f);
+
+            Renderer::drawCircle(testObj3.getBody()->m_collider.corner[0].x, testObj3.getBody()->m_collider.corner[0].y, 0.01f);
+            Renderer::drawCircle(testObj3.getBody()->m_collider.corner[1].x, testObj3.getBody()->m_collider.corner[1].y, 0.01f);
+            Renderer::drawCircle(testObj3.getBody()->m_collider.corner[2].x, testObj3.getBody()->m_collider.corner[2].y, 0.01f);
+            Renderer::drawCircle(testObj3.getBody()->m_collider.corner[3].x, testObj3.getBody()->m_collider.corner[3].y, 0.01f);
+
+            Renderer::drawCircle(testObj2.getBody()->m_collider.corner[0].x, testObj2.getBody()->m_collider.corner[0].y, 0.01f);
+            Renderer::drawCircle(testObj2.getBody()->m_collider.corner[1].x, testObj2.getBody()->m_collider.corner[1].y, 0.01f);
+            Renderer::drawCircle(testObj2.getBody()->m_collider.corner[2].x, testObj2.getBody()->m_collider.corner[2].y, 0.01f);
+            Renderer::drawCircle(testObj2.getBody()->m_collider.corner[3].x, testObj2.getBody()->m_collider.corner[3].y, 0.01f);
+            std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
+
+            world.update(a / 500);
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);

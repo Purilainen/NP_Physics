@@ -32,6 +32,6 @@ void NP_Object::update(float deltaTime)
     //m_polygon->setOrigin(m_body->m_collider.position);
     m_body->update(deltaTime);
     m_polygon->setRotation(m_body->m_orientation);
-    m_polygon->setOrigin(m_body->getPos());
+    //m_polygon->setOrigin(m_body->getPos());
     //m_polygon->setRotation(m_body->m_collider.rotation);
 }

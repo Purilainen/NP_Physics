@@ -25,12 +25,9 @@ void NP_CollisionInfo::Solve()
     {
         contact_count = 0;
         float overl = FLT_MAX;
-        glm::vec2 smallest;
+        glm::vec2 smallest(0, 0);
         NP_Body *A = m_aBody;
         NP_Body *B = m_bBody;
-        A->computeAxes();
-        B->computeAxes();
-
 
         //Loop over  A axes
         for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
@@ -54,7 +51,7 @@ void NP_CollisionInfo::Solve()
                 {
                     // Then set this to smallest
                     overl = o; // amount of overlapping
-                    //smallest = axis;
+                    smallest = axis;
                     normal = axis;
                 }
                 
@@ -63,6 +60,7 @@ void NP_CollisionInfo::Solve()
         //Loop over B axes
         for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
         {
+            
             glm::vec2 axis = B->m_collider.axes[i];
             // Project both shapes onto the axis
             glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
@@ -82,13 +80,14 @@ void NP_CollisionInfo::Solve()
                 {
                     // Then set this to smallest
                     overl = o; // amount of overlapping
-                    //smallest = axis;
+                    smallest = axis;
                     normal = axis;
                     
                 } 
             }
             
         }
+
         contact_count++;
         //normal = smallest;
         
@@ -422,16 +421,19 @@ void NP_CollisionInfo::FindIncidentFace(glm::vec2* v, NP_Body* refBody, NP_Body*
 
 bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
 {
-    if (projection1.y < projection2.x)
-    {
-        return true;
-    }
-    else if (projection1.x > projection2.y)
-    {
-        return true;
-    }
-    else
-        return false;
+    // x = min , y = max
+    //if (projection1.x < projection2.y)
+    //{
+    //    return true;
+    //}
+    //if (projection1.y > projection2.x)
+    //{
+    //    return true;
+    //}
+    //else
+    //    return false;
+
+    return !(projection1.x > projection2.y || projection2.x > projection1.y);
 }
 
 float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)
