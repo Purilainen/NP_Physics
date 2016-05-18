@@ -27,7 +27,7 @@ void NP_World::update(float deltaTime)
         NP_Body* A = m_objects[i]->getBody();
         
 
-        for (size_t j = 1; j < m_objects.size(); ++j)
+        for (size_t j = 0; j < m_objects.size(); ++j)
         {
             NP_Body* B = m_objects[j]->getBody();
 
@@ -124,6 +124,6 @@ void NP_World::updateOrientation(NP_Object* obj)
      temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
      B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
 
-     B->computeAxes();
+     //B->computeAxes();
 }
 

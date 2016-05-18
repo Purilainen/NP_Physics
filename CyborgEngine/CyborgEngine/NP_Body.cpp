@@ -124,6 +124,11 @@ void NP_Body::computeAxes()
         glm::vec2 p2 = m_collider.corner[i + 1 == m_collider.corner->length() ? 0 : i + 1];
         // Subtract the two to get the edge vector
         glm::vec2 edge = p1 - p2;
+        glm::vec2 zero(0, 0);
+        if (edge == zero)
+        {
+            edge = p2 - p1;
+        }
         // Get either perpendicular vector
         glm::vec2 leftHandNormal(edge.x, -edge.y);
         glm::vec2 rightHandNormal(-edge.x, edge.y);

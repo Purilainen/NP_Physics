@@ -64,7 +64,7 @@ struct Collider
             {
                 min = p;
             }
-            else if (p > max)
+            else
             {
                 max = p;
             }

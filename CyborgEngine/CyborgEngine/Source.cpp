@@ -152,7 +152,7 @@ int main()
 	world.addObject(&testObj2);
     world.addObject(&testObj3);
 
-    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.f));
+    testObj3.getBody()->setPos(glm::vec2(-1.f, 0.25f));
     testObj2.getBody()->setPos(glm::vec2(0.0f, 0.75f));
     testObj.getBody()->setPos(glm::vec2(1.0f, 0.f));
 

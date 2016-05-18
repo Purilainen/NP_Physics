@@ -29,69 +29,82 @@ void NP_CollisionInfo::Solve()
         NP_Body *A = m_aBody;
         NP_Body *B = m_bBody;
 
-        //Loop over  A axes
-        for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
-        {
-            glm::vec2 axis = A->m_collider.axes[i];
-            // Project both shapes onto the axis
-            glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
-            glm::vec2 p2 = B->m_collider.projectToAxis(axis);
-            // Check if projections overlap
-            if (!overlap(p1, p2))
-            {
-                //Shapes do not overlap
-                return;
-            }
-            else
-            {
-                // Get overlap
-                float o = getOverlap(p1, p2);
-                // Check for minimum
-                if (o < overl)
-                {
-                    // Then set this to smallest
-                    overl = o; // amount of overlapping
-                    smallest = axis;
-                    normal = axis;
-                }
-                
-            }
-        }
-        //Loop over B axes
-        for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
-        {
-            
-            glm::vec2 axis = B->m_collider.axes[i];
-            // Project both shapes onto the axis
-            glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
-            glm::vec2 p2 = B->m_collider.projectToAxis(axis);
-            // Check if projections overlap
-            if (!overlap(p1, p2))
-            {
-                //Shapes do not overlap
-                return;
-            }
-            else
-            {
-                // Get overlap
-                float o = getOverlap(p1, p2);
-                // Check for minimum
-                if (o < overl)
-                {
-                    // Then set this to smallest
-                    overl = o; // amount of overlapping
-                    smallest = axis;
-                    normal = axis;
-                    
-                } 
-            }
-            
-        }
+        A->computeAxes();
+        B->computeAxes();
 
-        contact_count++;
-        //normal = smallest;
-        
-        
+        if (A != B)
+        {
+
+            //Loop over  A axes
+            for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
+            {
+
+                glm::vec2 axis = A->m_collider.axes[i];
+
+                // Project both shapes onto the axis
+                glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
+                glm::vec2 p2 = B->m_collider.projectToAxis(axis);
+                // Check if projections overlap
+                if (!overlap(p1, p2))
+                {
+                    //Shapes do not overlap
+                    return;
+                }
+                else
+                {
+                    // Get overlap
+                    float o = getOverlap(p1, p2);
+                    // Check for minimum
+                    if (o < overl)
+                    {
+                        // Then set this to smallest
+                        overl = o; // amount of overlapping
+                        smallest = axis;
+                        normal = smallest;
+                    }
+
+                }
+            }
+            //Loop over B axes
+            for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
+            {
+
+                glm::vec2 axis = B->m_collider.axes[i];
+
+                // Project both shapes onto the axis
+                glm::vec2 p1 = A->m_collider.projectToAxis(axis); // x = min , y = max
+                glm::vec2 p2 = B->m_collider.projectToAxis(axis);
+                // Check if projections overlap
+                if (!overlap(p1, p2))
+                {
+                    //Shapes do not overlap
+                    return;
+                }
+                else
+                {
+                    // Get overlap
+                    float o = getOverlap(p1, p2);
+                    // Check for minimum
+                    if (o < overl)
+                    {
+                        // Then set this to smallest
+                        overl = o; // amount of overlapping
+                        smallest = axis;
+                        normal = smallest;
+
+                    }
+                }
+
+            }
+
+            contact_count++;
+            
+
+        }
+        else
+        {
+            return;
+        }
     }
 
     // AABB vs AABB // polyTopoly here
