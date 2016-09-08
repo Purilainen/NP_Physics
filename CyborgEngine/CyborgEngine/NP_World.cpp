@@ -111,20 +111,19 @@ void NP_World::updateOrientation(NP_Object* obj)
     R1 = glm::rotate(glm::mat4(), B->m_orientation, glm::vec3(0.0f, 0.0f, 1.0f));
     T_1 = glm::translate(glm::mat4(), glm::vec3(-B->getPos().x, -B->getPos().y, 1.0f));
     muunnos = T*R1*T_1;
-
     
-     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2 , B->getPos().y + B->m_collider.size / 2, 0.0f, 1.0f));
+     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size * 0.5f , B->getPos().y + B->m_collider.size * 0.5f, 0.0f, 1.0f));
      B->m_collider.corner[0] = glm::vec2(temp.x, temp.y);
 
-     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size / 2, B->getPos().y + B->m_collider.size / 2, 0.0f, 1.0f));
+     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size * 0.5f, B->getPos().y + B->m_collider.size * 0.5f, 0.0f, 1.0f));
      B->m_collider.corner[1] = glm::vec2(temp.x, temp.y);
 
-     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
+     temp = (muunnos * glm::vec4(B->getPos().x + B->m_collider.size * 0.5f, B->getPos().y - B->m_collider.size * 0.5f, 0.0f, 1.0f));
      B->m_collider.corner[2] = glm::vec2(temp.x, temp.y);
 
-     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size / 2, B->getPos().y - B->m_collider.size / 2, 0.0f, 1.0f));
+     temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size * 0.5f, B->getPos().y - B->m_collider.size * 0.5f, 0.0f, 1.0f));
      B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
 
-     //B->computeAxes();
+     B->computeAxes();
 }
 

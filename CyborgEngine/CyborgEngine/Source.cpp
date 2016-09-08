@@ -159,8 +159,9 @@ int main()
     
     testObj.getBody()->setVelocity(glm::vec2(-20.0f, 1.f));
 	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 1.f));
+    testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
     //testObj.getBody()->m_orientation = glm::radians(90.f);
-    //testObj3.getBody()->m_orientation = glm::radians(-45.f);
+    testObj3.getBody()->m_orientation = glm::radians(-45.f);
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 
@@ -318,7 +319,7 @@ int main()
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[3].x, testObj2.getBody()->m_collider.corner[3].y, 0.01f);
             std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
 
-            world.update(a / 500);
+            world.update(a / 5000);
 		}
 		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
 		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);

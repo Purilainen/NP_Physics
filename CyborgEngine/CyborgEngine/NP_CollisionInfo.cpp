@@ -27,8 +27,8 @@ void NP_CollisionInfo::Solve()
         NP_Body *A = m_aBody;
         NP_Body *B = m_bBody;
 
-        A->computeAxes();
-        B->computeAxes();
+        //A->computeAxes();
+        //B->computeAxes();
 
         if (A != B)
         {
@@ -36,7 +36,7 @@ void NP_CollisionInfo::Solve()
             //Loop over  A axes
             for (size_t i = 0; i < 4; ++i)
             {
-
+                
                 glm::vec2 axis = A->m_collider.axes[i];
 
                 // Project both shapes onto the axis
@@ -92,11 +92,8 @@ void NP_CollisionInfo::Solve()
 
                     }
                 }
-
             }
-
-            contact_count++;          
-
+            contact_count++;       
         }
         else
         {
@@ -443,20 +440,9 @@ bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
     //else
     //    return false;
 
-    if (projection1.x > projection2.x && projection1.x < projection2.y)
-    {
-        return true;
-    }
-    else if (projection2.x > projection1.x && projection2.x < projection1.y)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 
-    //return (projection1.x < projection2.y || projection2.x > projection1.y);
+
+    return (projection1.x < projection2.y || projection2.x > projection1.y);
 }
 
 float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)

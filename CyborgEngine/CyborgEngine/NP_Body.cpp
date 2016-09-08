@@ -114,14 +114,76 @@ void NP_Body::addCircleCollider(float radius)
 void NP_Body::computeAxes()
 {
     // The axes we want to test are the normals of each shape's edges
+    /*
+    glm::vec2 zero(0, 0);
+    glm::vec2 edge;
+    // Axis 1
+    glm::vec2 ax1p1 = m_collider.corner[0];
+    glm::vec2 ax1p2 = m_collider.corner[1];
 
-    // Loop over vertices
-    for (size_t i = 0; i <= 4; ++i)
+    edge = ax1p1 - ax1p2;
+
+    if (edge == zero)
+    {
+        edge = ax1p2 - ax1p1;
+    }
+    glm::vec2 ax1leftHandNormal(edge.x, -edge.y);
+    glm::vec2 ax1rightHandNormal(-edge.x, edge.y);
+
+    m_collider.axes[0] = glm::normalize(edge);
+
+    // Axis 2
+    glm::vec2 ax2p1 = m_collider.corner[1];
+    glm::vec2 ax2p2 = m_collider.corner[2];
+
+    edge = ax2p1 - ax2p2;
+
+    if (edge == zero)
+    {
+        edge = ax2p2 - ax2p1;
+    }
+    glm::vec2 ax2leftHandNormal(edge.x, -edge.y);
+    glm::vec2 ax2rightHandNormal(-edge.x, edge.y);
+
+    m_collider.axes[1] = glm::normalize(edge);
+
+    // Axis 3
+    glm::vec2 ax3p1 = m_collider.corner[2];
+    glm::vec2 ax3p2 = m_collider.corner[3];
+
+    edge = ax3p1 - ax3p2;
+
+    if (edge == zero)
+    {
+        edge = ax3p2 - ax3p1;
+    }
+    glm::vec2 ax3leftHandNormal(edge.x, -edge.y);
+    glm::vec2 ax3rightHandNormal(-edge.x, edge.y);
+
+    m_collider.axes[2] = glm::normalize(edge);
+
+    // Axis 4
+    glm::vec2 ax4p1 = m_collider.corner[3];
+    glm::vec2 ax4p2 = m_collider.corner[0];
+
+    edge = ax4p1 - ax4p2;
+
+    if (edge == zero)
+    {
+        edge = ax4p2 - ax4p1;
+    }
+    glm::vec2 ax4leftHandNormal(edge.x, -edge.y);
+    glm::vec2 ax4rightHandNormal(-edge.x, edge.y);
+
+    m_collider.axes[3] = glm::normalize(edge);
+
+    */
+    for (size_t i = 0; i < 3; ++i)
     {
         // Get current vertex
         glm::vec2 p1 = m_collider.corner[i];
         // Get next vertex
-        glm::vec2 p2 = m_collider.corner[i + 1 == m_collider.corner->length() ? 0 : i + 1];
+        glm::vec2 p2 = m_collider.corner[i + 1 == 4 ? 0 : i + 1];
         // Subtract the two to get the edge vector
         glm::vec2 edge = p1 - p2;
         glm::vec2 zero(0, 0);
@@ -134,7 +196,18 @@ void NP_Body::computeAxes()
         glm::vec2 rightHandNormal(-edge.x, edge.y);
 
         m_collider.axes[i] = glm::normalize(leftHandNormal); // Normalize - Or right handed?
+
     }
+
+    glm::vec2 testEdge = m_collider.corner[3] - m_collider.corner[0];
+    if (testEdge == glm::vec2(0))
+    {
+        testEdge = m_collider.corner[0] - m_collider.corner[3];
+    }
+
+    glm::vec2 lefty(testEdge.x, -testEdge.y);
+    m_collider.axes[3] = glm::normalize(lefty);
+
 }
 
 
