@@ -160,7 +160,7 @@ int main()
     testObj.getBody()->setVelocity(glm::vec2(-20.0f, 1.f));
 	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 1.f));
     testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
-    //testObj.getBody()->m_orientation = glm::radians(90.f);
+    //testObj.getBody()->m_orientation = glm::radians(30.f);
     testObj3.getBody()->m_orientation = glm::radians(-45.f);
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END

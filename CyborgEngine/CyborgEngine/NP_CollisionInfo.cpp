@@ -27,8 +27,8 @@ void NP_CollisionInfo::Solve()
         NP_Body *A = m_aBody;
         NP_Body *B = m_bBody;
 
-        //A->computeAxes();
-        //B->computeAxes();
+        A->computeAxes();
+        B->computeAxes();
 
         if (A != B)
         {
