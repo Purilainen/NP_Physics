@@ -159,7 +159,7 @@ int main()
     
     testObj.getBody()->setVelocity(glm::vec2(-20.0f, 1.f));
 	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 1.f));
-    //testObj.getBody()->m_orientation = glm::radians(45.f);
+    //testObj.getBody()->m_orientation = glm::radians(90.f);
     //testObj3.getBody()->m_orientation = glm::radians(-45.f);
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
@@ -304,6 +304,8 @@ int main()
 
             Renderer::drawCircle(testObj.getBody()->m_collider.corner[0].x, testObj.getBody()->m_collider.corner[0].y, 0.01f);
             Renderer::drawCircle(testObj.getBody()->m_collider.corner[1].x, testObj.getBody()->m_collider.corner[1].y, 0.01f);
+            Renderer::drawCircle(testObj.getBody()->m_collider.corner[2].x, testObj.getBody()->m_collider.corner[2].y, 0.01f);
+            Renderer::drawCircle(testObj.getBody()->m_collider.corner[3].x, testObj.getBody()->m_collider.corner[3].y, 0.01f);
 
             Renderer::drawCircle(testObj3.getBody()->m_collider.corner[0].x, testObj3.getBody()->m_collider.corner[0].y, 0.01f);
             Renderer::drawCircle(testObj3.getBody()->m_collider.corner[1].x, testObj3.getBody()->m_collider.corner[1].y, 0.01f);

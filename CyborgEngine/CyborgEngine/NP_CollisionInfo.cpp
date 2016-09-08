@@ -15,8 +15,6 @@ NP_CollisionInfo::~NP_CollisionInfo()
 
 void NP_CollisionInfo::Solve()
 {
-    // Pseudo stuff
-
     // 1st Get axes for both bodies
     //http://www.dyn4j.org/2010/01/sat/
     // 2nd loop over axes
@@ -36,7 +34,7 @@ void NP_CollisionInfo::Solve()
         {
 
             //Loop over  A axes
-            for (size_t i = 0; i < A->m_collider.axes->length(); ++i)
+            for (size_t i = 0; i < 4; ++i)
             {
 
                 glm::vec2 axis = A->m_collider.axes[i];
@@ -66,7 +64,7 @@ void NP_CollisionInfo::Solve()
                 }
             }
             //Loop over B axes
-            for (size_t i = 0; i < B->m_collider.axes->length(); ++i)
+            for (size_t i = 0; i < 4; ++i)
             {
 
                 glm::vec2 axis = B->m_collider.axes[i];
@@ -97,8 +95,7 @@ void NP_CollisionInfo::Solve()
 
             }
 
-            contact_count++;
-            
+            contact_count++;          
 
         }
         else
@@ -446,7 +443,20 @@ bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
     //else
     //    return false;
 
-    return !(projection1.x > projection2.y || projection2.x > projection1.y);
+    if (projection1.x > projection2.x && projection1.x < projection2.y)
+    {
+        return true;
+    }
+    else if (projection2.x > projection1.x && projection2.x < projection1.y)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+    //return (projection1.x < projection2.y || projection2.x > projection1.y);
 }
 
 float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)

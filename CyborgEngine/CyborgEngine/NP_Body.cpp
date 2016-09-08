@@ -116,7 +116,7 @@ void NP_Body::computeAxes()
     // The axes we want to test are the normals of each shape's edges
 
     // Loop over vertices
-    for (size_t i = 0; i < m_collider.corner->length(); ++i)
+    for (size_t i = 0; i <= 4; ++i)
     {
         // Get current vertex
         glm::vec2 p1 = m_collider.corner[i];

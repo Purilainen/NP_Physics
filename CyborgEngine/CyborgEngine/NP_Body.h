@@ -57,7 +57,7 @@ struct Collider
         float min = Dot(axis, corner[0]);
         
         float max = min;
-        for (size_t i = 1; i < corner->length(); ++i)
+        for (size_t i = 0; i < corner->length(); ++i)
         {
             float p = Dot(axis, corner[i]);
             if (p < min)
@@ -69,7 +69,7 @@ struct Collider
                 max = p;
             }
         }
-        glm::vec2 projection(min, max);
+        glm::vec2 projection(min, max);        
         return projection;
     }
 

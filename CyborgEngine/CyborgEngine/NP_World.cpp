@@ -39,6 +39,7 @@ void NP_World::update(float deltaTime)
             cI.Solve(); //Do collision check
             if (cI.contact_count)
                 contacts.emplace_back(cI);
+
         }
     }
 
