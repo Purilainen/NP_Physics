@@ -172,7 +172,7 @@ int main()
 			if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
 			{
 				isEnterPressed = true;
-				scene = (scene+1) % 4;		// SCENEJEN MÄÄRÄ?
+				scene = (scene+1) % 1;		// SCENEJEN MÄÄRÄ
 				a = 0.0f;
 			}
 		}
@@ -189,115 +189,11 @@ int main()
 		Renderer::initDraw();
 
 		//--------------------draw--------------------
-		if (scene == 3)
+
+		if (scene == 0)
 		{
-			a += 0.2;
-			if (a > PI * 2)
-			{
-				a -= PI * 2;
-			}
-			float add = a / PI / 6 - 0.3;
-			float step = 1.0f / 3.0f;
-			Renderer::setColor(0xFFA040FF);
-			for (int i = 0; i < 3; i++)
-			{
-				Renderer::drawCircle(step*(i + 1) - add, 0, 0.1);
-			}
-
-			Renderer::setColor(0xFFFF00FF);
-			Renderer::drawPie(0, 0, 0.5, 0.75 + 0.125 + sin(a) / 8, -PI / 4 * (sin(a) / 2 + 0.5) + PI / 4);
-
-			//Renderer::setColor(0x000FFF);
-			Renderer::setColor(0, 0, 1, 1);
-			Renderer::drawLine(-1.0, 0.9, 1.0, 0.9, 10);
-			Renderer::drawLine(-1.0, 0.8, 1.0, 0.8, 10);
-
-			Renderer::drawLine(-1.0, -0.9, 1.0, -0.9, 10);
-			Renderer::drawLine(-1.0, -0.8, 1.0, -0.8, 10);
-		}
-		else if (scene == 2)
-		{
-			Renderer::setColor(1.0, 0, 0, (sin(a) + 1) / 10);
-			Renderer::drawPolygon(&c, 0, 0);
-
-			c.setRotation(a);
-
-			Renderer::setColor(0.0f, 0.0f, 0.0f, 1);
-
-			for (int i = 0; i < 8; i++)
-			{
-				p.setRotation(a + i*3.14159265 / 4);
-				Renderer::drawPolygon(&p, 0, 0);
-			}
-			p.setOrigin(-0.5, 0.0);
-			for (int i = 0; i < 64; i++)
-			{
-				p.setOrigin(-0.5 - (float)i / 256, 0.0);
-				p.setScale((float)(i + 1) / 16);
-				p.setRotation(a + i*3.14159265 / 8);
-				Renderer::drawPolygonTextured(&p, 0.0, 0.0, "testi");
-			}
-			int num = 64;
-			float step = 3.14159265 * 2 / num;
-			for (int i = 0; i < num; i++)
-			{
-				Renderer::drawPointSprite(cos((i*step + a) * 2 + PI / 2), sin(i*step + a), (sin(step*i - a) / 2.2 + 0.51) / 2, ps, cos(i*step + a * 2) / 2 + 0.5);
-			}
-		}
-		else if (scene == 1)
-		{
-			//sprites
-			Renderer::setColor(0x000040FF);
-			Renderer::drawRectangle(-1, -1, 1, 1);
-
-			spriteTimer += 1;
-			if (spriteTimer > 1)
-			{
-				spriteNumber++;
-				spriteTimer = 0;
-			}
-			for (int i = 0; i < 50; i++)
-			{
-				float aX = aa.getSprite(spriteNumber % 30).x;
-				float aY = aa.getSprite(spriteNumber % 30).y;
-				Renderer::drawSprite(&aa, rain[i].x, rain[i].y, aX, aY, "sheet", 1);
-				rain[i].y -= 0.03 + sin(rain[i].x * cos(a) * 4) / 120;
-				if (rain[i].y < -1.0)
-				{
-					rain[i].y = 1.2;
-				}
-			}
-		}
-		else if (scene == 0)
-		{
-			
-
-			Renderer::setColor(1, 1, 1, 0.5);;
-;
-            //if (glfwGetKey(window, GLFW_KEY_O))
-            //testObj.getBody()->addForce(0, 9.81);
-
-            //testObj2.getBody()->addForce(0, 9.81);
-
-            
-        
-
-
-            
-            
-            //NP_Physics
-            /*testObj.bindPolygon(&p3);
-            testObj2.bindPolygon(&p2);
-            testObj3.bindPolygon(&p4);*/
-            
-			// You can now add own velocity to different bodies
-			//testObj2.getBody()->setVelocity(testObj2.getBody()->getVelocity() + glm::vec2(0.f, 1.f));
-            //testObj3.getBody()->setVelocity(testObj3.getBody()->getVelocity() + glm::vec2(1.f, 0.f));
-            
-
-            //Renderer::drawPolygon(&poly1, testObj.getBody()->m_position.x, testObj.getBody()->m_position.y);
-            /*Renderer::drawPolygon(&poly2, testObj2.getBody()->m_position.x, testObj2.getBody()->m_position.y);
-            Renderer::drawPolygon(&poly3, testObj3.getBody()->m_position.x, testObj3.getBody()->m_position.y);*/
+		
+			Renderer::setColor(1, 1, 1, 0.5);
 
             Renderer::drawPolygon(&poly1, testObj.getBody()->m_collider.position.x, testObj.getBody()->m_collider.position.y);
             Renderer::drawPolygon(&poly2, testObj2.getBody()->m_collider.position.x, testObj2.getBody()->m_collider.position.y);
@@ -319,11 +215,10 @@ int main()
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[3].x, testObj2.getBody()->m_collider.corner[3].y, 0.01f);
             std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
 
+			testObj.getBody()->setOrient(a);
+
             world.update(a / 5000);
 		}
-		//std::cout << spriteNumber % 30 << ": " << aX << ", " << aY << "\n";
-		//Renderer::drawSprite(&aa, -0.5, 0.5, aX, aY, "sheet", 0.5);
-		
 		//--------------------end draw--------------------
 		//swap buffers
 		Renderer::render();
@@ -331,12 +226,6 @@ int main()
 	} while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0);
 
-	//Camera stuff
-	/*computeMatrices();
-	glm::mat4 ProjectionMatrix = getProjectionMatrix();
-	glm::mat4 ViewMatrix = getViewMatrix();
-	glm::mat4 ModelMatrix = glm::mat4(1.0);
-	glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix; */
 	Renderer::uninitRender();
 	glfwTerminate();
 	return 0;
