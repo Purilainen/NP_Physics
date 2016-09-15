@@ -14,7 +14,8 @@ public:
     void Initialize(); // Pre-calculations for impulse solving
     void ApplyImpulse(); // Solve impulse and apply it   
     bool overlap(glm::vec2 projection1, glm::vec2 projection2);
-    float getOverlap(glm::vec2 projection1, glm::vec2 projection2);    
+    float getOverlap(glm::vec2 projection1, glm::vec2 projection2);   
+    void calcContactPoints();
 
     NP_Body *m_aBody;
     NP_Body *m_bBody;

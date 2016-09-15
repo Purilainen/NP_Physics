@@ -4,13 +4,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 NP_World::NP_World()
-{
-}
-
+{}
 
 NP_World::~NP_World()
-{
-}
+{}
 
 void NP_World::update(float deltaTime)
 {
@@ -23,8 +20,7 @@ void NP_World::update(float deltaTime)
     contacts.clear();
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
-        NP_Body* A = m_objects[i]->getBody();
-        
+        NP_Body* A = m_objects[i]->getBody();        
 
         for (size_t j = 0; j < m_objects.size(); ++j)
         {
@@ -38,10 +34,8 @@ void NP_World::update(float deltaTime)
             cI.Solve(); //Do collision check
             if (cI.contact_count)
                 contacts.emplace_back(cI);
-
         }
     }
-
    
     // Integrate forces
     // - Go through objects - calc forces (calc acceleration)
@@ -52,13 +46,11 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < contacts.size(); ++i)
     {
         contacts[i].Initialize();
-
     }
     //Solve collisions - apply impulse
     for (size_t i = 0; i < contacts.size(); ++i)
     {
         contacts[i].ApplyImpulse();
-
     }
 
     // Integrate velocities
@@ -69,18 +61,14 @@ void NP_World::update(float deltaTime)
     {
         m_objects[i]->getBody()->m_force = glm::vec2(0, 0);
         m_objects[i]->getBody()->m_torque = 0;
-
     }
-
-
 }
 
 void NP_World::integrateVelocity(NP_Object* obj, float deltaTime)
 {
     // Position
     // pos += velocity * dt
-    obj->getBody()->m_position += obj->getBody()->m_velocity * deltaTime;
-     
+    obj->getBody()->m_position += obj->getBody()->m_velocity * deltaTime;     
     
     // Orientation
     // orient += angularVelocity * dt

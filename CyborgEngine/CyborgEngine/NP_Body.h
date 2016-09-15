@@ -49,8 +49,6 @@ struct Collider
         rotation = radians;
     }
 
-
-
     glm::vec2 projectToAxis(glm::vec2 axis)
     {
         // Project to normalized axis
@@ -72,7 +70,6 @@ struct Collider
                 
         return glm::vec2(min, max);
     }
-
 };
 
 class NP_World;
@@ -102,6 +99,7 @@ public:
 
 	NP_Body(NP_World world);
 	~NP_Body();
+
     Collider m_collider;
     bool Static, Kinematic, Dynamic;
     glm::vec2 m_velocity;

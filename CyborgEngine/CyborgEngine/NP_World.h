@@ -29,6 +29,5 @@ private:
     glm::mat4 T_1;
     glm::mat4 muunnos;
     glm::vec4 temp;
-
 };
 #endif;

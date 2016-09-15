@@ -7,14 +7,11 @@ void NP_Body::update(float deltaTime)
     m_collider.position = m_position;
 
     if (Static)
-    {
-    }
+    {}
     else if (Kinematic)
-    {
-    }
+    {}
     else if (Dynamic)
-    {        
-    }
+    {}
 }
 
 void NP_Body::addBoxCollider(float size)
@@ -93,5 +90,4 @@ NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true
 }
 
 NP_Body::~NP_Body()
-{
-}
+{}

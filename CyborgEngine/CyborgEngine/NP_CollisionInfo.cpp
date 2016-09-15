@@ -1,17 +1,11 @@
 #include "NP_CollisionInfo.h"
 
-
-
-
 NP_CollisionInfo::NP_CollisionInfo(NP_Body *a, NP_Body *b)
     : m_aBody(a), m_bBody(b)
-{
-
-}
+{}
 
 NP_CollisionInfo::~NP_CollisionInfo()
-{
-}
+{}
 
 void NP_CollisionInfo::Solve()
 {
@@ -32,7 +26,6 @@ void NP_CollisionInfo::Solve()
 
         if (A != B)
         {
-
             //Loop over  A axes
             for (size_t i = 0; i < 4; ++i)
             {                
@@ -59,13 +52,11 @@ void NP_CollisionInfo::Solve()
                         smallest = axis;
                         normal = smallest;
                     }
-
                 }
             }
             //Loop over B axes
             for (size_t i = 0; i < 4; ++i)
             {
-
                 glm::vec2 axis = B->m_collider.axes[i];
 
                 // Project both shapes onto the axis
@@ -169,7 +160,6 @@ void NP_CollisionInfo::Initialize()
 
         glm::vec2 rv = m_bBody->m_velocity + Cross(m_bBody->m_angularVelocity, rb) -
                        m_aBody->m_velocity + Cross(m_aBody->m_angularVelocity, ra);
-
         
         // Determine if we should perform a resting collision or not
         // The idea is if the only thing moving this object is gravity,
@@ -182,12 +172,10 @@ void NP_CollisionInfo::Initialize()
             e = 0.0f;
         }
     }
-
 }
 
 void NP_CollisionInfo::ApplyImpulse()
-{
-    
+{    
     //KARVALAKKIMALLI
 
     NP_Body* A = m_aBody;
@@ -213,10 +201,6 @@ void NP_CollisionInfo::ApplyImpulse()
     glm::vec2 impulse = j * normal;
     A->m_velocity -= (1 / A->m_mass) * impulse;
     B->m_velocity += (1 / B->m_mass) * impulse;
-
-    
-
-
 
     // Check if both objects have infinite mass
     //if (/* A->inverseMass == B->inverseMass*/)
@@ -271,4 +255,20 @@ float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)
     {
         //PROBLEM WITH OVERLAP
     }
+}
+
+void NP_CollisionInfo::calcContactPoints()
+{
+    // http://www.dyn4j.org/2011/11/contact-points-using-clipping/
+    // 1st Find features
+    // Find the farthest vertex in the shape. Then, we look at the adjacent two vertices to determine which edge is the “closest.”
+    // Closest is the edge which is most perpendicular (kohtisuora) to the separation normal.
+
+
+    // 2nd Clip to get contact points
+    // Identify the reference edge and incident edge. 
+    // The reference edge is the edge most perpendicular to the separation normal. 
+    // The reference edge will be used to clip the incident edge vertices to generate the contact manifold.
+
+
 }
