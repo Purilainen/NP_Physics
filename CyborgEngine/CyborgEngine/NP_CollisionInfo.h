@@ -18,6 +18,9 @@ public:
     void calcContactPoints();
     void clip(glm::vec2 v1, glm::vec2 v0,glm::vec2 n, float offset);
 
+
+    std::vector<glm::vec2> getContactPoints() const;
+
     NP_Body *m_aBody;
     NP_Body *m_bBody;
 

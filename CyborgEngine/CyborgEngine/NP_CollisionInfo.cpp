@@ -412,3 +412,8 @@ void NP_CollisionInfo::clip(glm::vec2 v1, glm::vec2 v0, glm::vec2 n, float offse
         contactPoints.emplace_back(e);
     }
 }
+
+std::vector<glm::vec2> NP_CollisionInfo::getContactPoints() const
+{
+    return contactPoints;
+}

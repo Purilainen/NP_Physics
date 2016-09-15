@@ -3,6 +3,7 @@
 #include <iostream>
 #include "glm/gtc/matrix_transform.hpp"
 
+
 NP_World::NP_World()
 {}
 
@@ -33,7 +34,7 @@ void NP_World::update(float deltaTime)
             updateOrientation(m_objects[j]);
             cI.Solve(); //Do collision check
             if (cI.contact_count)
-                contacts.emplace_back(cI);
+                contacts.emplace_back(cI);            
         }
     }
    
@@ -51,6 +52,13 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < contacts.size(); ++i)
     {
         contacts[i].ApplyImpulse();
+
+        std::vector<glm::vec2> temp = contacts[i].getContactPoints();
+        for (size_t j = 0; j < temp.size(); ++j)
+        {
+            //Renderer::drawCircle(temp[j].x, temp[j].y, 0.02f);
+            std::cout << temp[j].x << " , " << temp[j].y << std::endl;
+        }
     }
 
     // Integrate velocities

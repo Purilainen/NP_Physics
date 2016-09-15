@@ -3,8 +3,6 @@
 
 #define PI 3.14159265
 
-
-
 #include "Renderer.h"
 #include "Circle.h"
 GLFWwindow* window;
@@ -216,7 +214,7 @@ int main()
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[1].x, testObj2.getBody()->m_collider.corner[1].y, 0.01f);
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[2].x, testObj2.getBody()->m_collider.corner[2].y, 0.01f);
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[3].x, testObj2.getBody()->m_collider.corner[3].y, 0.01f);
-            std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
+            //std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
 
 			//testObj.getBody()->setOrient(a);
 
