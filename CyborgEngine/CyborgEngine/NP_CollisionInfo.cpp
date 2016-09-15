@@ -83,7 +83,8 @@ void NP_CollisionInfo::Solve()
                     }
                 }
             }
-            contact_count++;       
+            contact_count++;
+            calcContactPoints();
         }
         else
         {
@@ -150,28 +151,28 @@ void NP_CollisionInfo::Solve()
 void NP_CollisionInfo::Initialize()
 {
     // Calculate average restitution - (ratio of relative speeds after and before an impact)
-    e = glm::min(m_aBody->m_restitution, m_bBody->m_restitution);
+    //e = glm::min(m_aBody->m_restitution, m_bBody->m_restitution);
 
-    for (size_t i = 0; i < contact_count; ++i)
-    {
-        //Calculate radii from COM (center of mass) to contact
-        glm::vec2 ra = contactPoints[i] - m_aBody->m_position;
-        glm::vec2 rb = contactPoints[i] - m_bBody->m_position;
+    //for (size_t i = 0; i < contact_count; ++i)
+    //{
+    //    //Calculate radii from COM (center of mass) to contact
+    //    glm::vec2 ra = contactPoints[i] - m_aBody->m_position;
+    //    glm::vec2 rb = contactPoints[i] - m_bBody->m_position;
 
-        glm::vec2 rv = m_bBody->m_velocity + Cross(m_bBody->m_angularVelocity, rb) -
-                       m_aBody->m_velocity + Cross(m_aBody->m_angularVelocity, ra);
-        
-        // Determine if we should perform a resting collision or not
-        // The idea is if the only thing moving this object is gravity,
-        // then the collision should be performed without any restitution
-        float lenSquared = rv.length() * rv.length();
-        float gLenSqr = gravity.length() * gravity.length();
+    //    glm::vec2 rv = m_bBody->m_velocity + Cross(m_bBody->m_angularVelocity, rb) -
+    //                   m_aBody->m_velocity + Cross(m_aBody->m_angularVelocity, ra);
+    //    
+    //    // Determine if we should perform a resting collision or not
+    //    // The idea is if the only thing moving this object is gravity,
+    //    // then the collision should be performed without any restitution
+    //    float lenSquared = rv.length() * rv.length();
+    //    float gLenSqr = gravity.length() * gravity.length();
 
-        if (lenSquared < (dt * gLenSqr + EPSILON))
-        {
-            e = 0.0f;
-        }
-    }
+    //    if (lenSquared < (dt * gLenSqr + EPSILON))
+    //    {
+    //        e = 0.0f;
+    //    }
+    //}
 }
 
 void NP_CollisionInfo::ApplyImpulse()
@@ -202,13 +203,7 @@ void NP_CollisionInfo::ApplyImpulse()
     A->m_velocity -= (1 / A->m_mass) * impulse;
     B->m_velocity += (1 / B->m_mass) * impulse;
 
-    // Check if both objects have infinite mass
-    //if (/* A->inverseMass == B->inverseMass*/)
-    //    {
-    //    InfiniteMassCorrection();
-    //    return;
-    //    }
-
+    
     //for (size_t i = 0; i < contact_count; ++i)
     //{
     //    // Calculate radii from COM to contact
@@ -263,12 +258,157 @@ void NP_CollisionInfo::calcContactPoints()
     // 1st Find features
     // Find the farthest vertex in the shape. Then, we look at the adjacent two vertices to determine which edge is the “closest.”
     // Closest is the edge which is most perpendicular (kohtisuora) to the separation normal.
+    index = 0;
+    glm::vec2 edge;
 
+    for (int i = 0; i < 4; ++i)
+    {        
+        float max = -FLT_MAX;
+        float projection = Dot(normal, m_aBody->m_collider.corner[i]);
+        if (projection > max)
+        {
+            max = projection;
+            index = i;
+        }
+    }
+
+    glm::vec2 v = m_aBody->m_collider.corner[index];
+    glm::vec2 v1 = m_aBody->m_collider.corner[index + 1];
+    glm::vec2 v0 = m_aBody->m_collider.corner[index - 1];
+
+    // v1 to v0
+    glm::vec2 l = v - v1;
+    // v0 to v
+    glm::vec2 r = v - v0;
+
+    // normalize
+    glm::normalize(l);
+    glm::normalize(r);
+
+    if (Dot(normal, r) <= Dot(normal, l))
+    {
+        edge = r;
+    }
+    else
+    {
+        edge = l;
+    }
+
+    index = 0;
+    glm::vec2 edge2;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        float max = -FLT_MAX;
+        float projection = Dot(normal, m_bBody->m_collider.corner[i]);
+        if (projection > max)
+        {
+            max = projection;
+            index = i;
+        }
+    }
+
+    v = m_bBody->m_collider.corner[index];
+    v1 = m_bBody->m_collider.corner[index + 1];
+    v0 = m_bBody->m_collider.corner[index - 1];
+
+    // v1 to v0
+    l = v - v1;
+    // v0 to v
+    r = v - v0;
+
+    // normalize
+    glm::normalize(l);
+    glm::normalize(r);
+
+    if (Dot(normal, r) <= Dot(normal, l))
+    {
+        edge2 = r;
+    }
+    else
+    {
+        edge2 = l;
+    }
+
+    glm::vec2 ref, inc;
+    bool flip = false;
+    if (glm::abs(Dot(normal, edge) <= glm::abs(Dot(normal, edge2))))
+    {
+        ref = edge;
+        inc = edge2;
+        v = m_aBody->m_collider.corner[index];
+        v1 = m_aBody->m_collider.corner[index + 1];
+        v0 = m_aBody->m_collider.corner[index - 1];
+    }
+    else
+    {
+        ref = edge2;
+        inc = edge;
+        v = m_bBody->m_collider.corner[index];
+        v1 = m_bBody->m_collider.corner[index + 1];
+        v0 = m_bBody->m_collider.corner[index - 1];
+        flip = true;
+    }
 
     // 2nd Clip to get contact points
     // Identify the reference edge and incident edge. 
     // The reference edge is the edge most perpendicular to the separation normal. 
     // The reference edge will be used to clip the incident edge vertices to generate the contact manifold.
+    glm::normalize(ref);
 
+    float o1 = Dot(ref, v1);
 
+    clip(v1, v0, ref, o1);
+
+    if (contactPoints.size() < 2)
+        return;
+
+    float o2 = Dot(ref, v0);
+
+    clip(contactPoints[0], contactPoints[1], -ref, -o2);
+
+    if (contactPoints.size() < 2)
+        return;
+
+    glm::vec2 refNorm = Cross(ref, -1.0f);
+
+    if (flip)
+    {
+        refNorm = glm::vec2(refNorm.x * -1, refNorm.y * -1);
+    }
+
+    float max = Dot(refNorm, v1); // v0?       
+
+    if (Dot(refNorm, contactPoints[0]) - max < 0.0f && !contactPoints.empty())
+    {
+        contactPoints.erase(contactPoints.begin());
+    }
+    if (Dot(refNorm, contactPoints[1]) - max < 0.0f && !contactPoints.empty())
+    {
+        contactPoints.erase(contactPoints.end() - 1); // might be wrong
+    }
+}
+
+void NP_CollisionInfo::clip(glm::vec2 v1, glm::vec2 v0, glm::vec2 n, float offset)
+{
+    
+
+    float d1 = Dot(n, v1) - offset;
+    float d2 = Dot(n, v0) - offset;
+
+    if (d1 >= 0.0f)
+        contactPoints.emplace_back(v1);
+    if (d2 >= 0.0f)
+        contactPoints.emplace_back(v0);
+
+    if (d1 * d2 < 0.0f)
+    {
+        glm::vec2 e = v0 - v1;
+
+        float u = d1 / (d1 - d2);
+        e = e * u;
+        e = e + v1;
+
+        contactPoints.emplace_back(e);
+    }
 }

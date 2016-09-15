@@ -16,15 +16,17 @@ public:
     bool overlap(glm::vec2 projection1, glm::vec2 projection2);
     float getOverlap(glm::vec2 projection1, glm::vec2 projection2);   
     void calcContactPoints();
+    void clip(glm::vec2 v1, glm::vec2 v0,glm::vec2 n, float offset);
 
     NP_Body *m_aBody;
     NP_Body *m_bBody;
 
     float penetration; // Depth of penetration
     glm::vec2 normal; // Normal vector from A to B
-    glm::vec2 contactPoints[2]; // Points of contact during collision
+    std::vector<glm::vec2> contactPoints;
     int contact_count; // Number of contacts during collision
     float e; // Mixed restitution?
+    int index;
 };
 
 #endif
