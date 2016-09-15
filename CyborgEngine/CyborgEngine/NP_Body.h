@@ -81,24 +81,9 @@ class NP_Body
 public:
 
     void update(float deltaTime);
-
-    //glm::vec2 getPosition() //Get collider pos
-    //float getRotation() //Get collider rotation
-    //set...
-
-    //addCollider(Shape &shape)
-    //bool detectCollisions
-    //addCollisionBox(points)
-    //addColliderFromPoly(polygon)
-    void addBoxCollider(float size);
-    void addCircleCollider(float radius);
+    
+    void addBoxCollider(float size); // Add box collider
     void computeAxes(); //Compute axes for collider
-    bool overLaps1Way(NP_Body* otherBody);
-    bool overLaps(NP_Body* otherB) 
-    {
-        return overLaps1Way(otherB) && otherB->overLaps1Way(this);
-    }
-	void addColliderFromPoly(float size);
 
     glm::vec2 getPos() { return m_position; }
     void setPos(glm::vec2 pos){ m_position = pos; }
@@ -106,9 +91,6 @@ public:
     bool isStatic(bool value) { Static = value; }
     bool isDynamic(bool value){ Dynamic = value; }
     bool isKinematic(bool value) { Kinematic = value; }
-    bool inProximity(NP_Body* b); //Check in circle radius if there are other bodies near by, if true - do accurate collision check
-    //checkCollision()
-
     
     void setOrient(float orient) { m_orientation = orient; m_collider.setOrient(m_orientation); }
 

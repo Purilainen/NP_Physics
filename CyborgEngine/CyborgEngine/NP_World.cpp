@@ -14,7 +14,6 @@ NP_World::~NP_World()
 
 void NP_World::update(float deltaTime)
 {
-    //Sleep(50);
     for (size_t i = 0; i < m_objects.size(); ++i)
         m_objects[i]->update(deltaTime);
 
@@ -91,7 +90,6 @@ void NP_World::integrateVelocity(NP_Object* obj, float deltaTime)
 
     //IntegrateForces(obj, deltatime)
     integrateForces(obj, deltaTime);
-
 }
 
 void NP_World::integrateForces(NP_Object* obj, float deltaTime)
@@ -123,7 +121,5 @@ void NP_World::updateOrientation(NP_Object* obj)
 
      temp = (muunnos * glm::vec4(B->getPos().x - B->m_collider.size * 0.5f, B->getPos().y - B->m_collider.size * 0.5f, 0.0f, 1.0f));
      B->m_collider.corner[3] = glm::vec2(temp.x, temp.y);
-
-     //B->computeAxes();
 }
 
