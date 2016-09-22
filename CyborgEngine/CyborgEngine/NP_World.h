@@ -3,6 +3,7 @@
 
 #include "NP_Object.h"
 #include "NP_CollisionInfo.h"
+#include "Renderer.h"
 #include <vector>
 class NP_Object;
 class NP_CollisionInfo;

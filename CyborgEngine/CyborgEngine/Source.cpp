@@ -218,9 +218,6 @@ int main()
 
 			//testObj.getBody()->setOrient(a);
 
-            
-
-
             world.update(a / 5000);
 		}
 		//--------------------end draw--------------------

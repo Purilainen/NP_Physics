@@ -56,8 +56,10 @@ void NP_World::update(float deltaTime)
         std::vector<glm::vec2> temp = contacts[i].getContactPoints();
         for (size_t j = 0; j < temp.size(); ++j)
         {
-            //Renderer::drawCircle(temp[j].x, temp[j].y, 0.02f);
-            std::cout << temp[j].x << " , " << temp[j].y << std::endl;
+			// Draws circle to the contact point.
+            Renderer::drawCircle(temp[j].x, temp[j].y, 0.05f);
+			
+            //std::cout << temp[j].x << " , " << temp[j].y << std::endl;
         }
     }
 
