@@ -62,7 +62,7 @@ void NP_Body::computeAxes()
         glm::vec2 leftHandNormal(edge.x, -edge.y);
         glm::vec2 rightHandNormal(-edge.x, edge.y);
 
-        m_collider.axes[i] = glm::normalize(leftHandNormal); // Normalize - Or right handed?
+        m_collider.axes[i] = glm::normalize(rightHandNormal); // Normalize - Or right handed?
 
     }
 
@@ -72,9 +72,11 @@ void NP_Body::computeAxes()
         testEdge = m_collider.corner[0] - m_collider.corner[3];
     }
 
-    glm::vec2 lefty(testEdge.x, -testEdge.y);
-    m_collider.axes[3] = glm::normalize(lefty);
+    //glm::vec2 lefty(testEdge.x, -testEdge.y);
+    //m_collider.axes[3] = glm::normalize(lefty);
 
+	glm::vec2 righty(-testEdge.x, testEdge.y);
+	m_collider.axes[3] = glm::normalize(righty);
 }
 
 void NP_Body::addForce(float forceX, float forceY)

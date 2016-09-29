@@ -44,10 +44,11 @@ void NP_World::update(float deltaTime)
         integrateForces(m_objects[i], deltaTime);
 
     // Init collision
-    for (size_t i = 0; i < contacts.size(); ++i)
-    {
-        contacts[i].Initialize();
-    }
+    //for (size_t i = 0; i < contacts.size(); ++i)
+    //{
+    //    contacts[i].Initialize();
+    //}
+
     //Solve collisions - apply impulse
     for (size_t i = 0; i < contacts.size(); ++i)
     {

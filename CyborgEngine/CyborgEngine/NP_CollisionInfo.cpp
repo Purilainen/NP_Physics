@@ -385,7 +385,7 @@ void NP_CollisionInfo::calcContactPoints()
     }
     if (Dot(refNorm, contactPoints[1]) - max < 0.0f && !contactPoints.empty())
     {
-        contactPoints.erase(contactPoints.end() - 1); // might be wrong
+        contactPoints.erase(contactPoints.end() - 1); // might be wrong???
     }
 }
 
