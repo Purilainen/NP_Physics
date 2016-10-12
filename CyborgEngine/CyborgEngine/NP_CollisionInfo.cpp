@@ -177,10 +177,13 @@ void NP_CollisionInfo::Initialize()
 
 void NP_CollisionInfo::ApplyImpulse()
 {    
-    //KARVALAKKIMALLI
-
+    
+    
     NP_Body* A = m_aBody;
     NP_Body* B = m_bBody;
+
+    
+    //KARVALAKKIMALLI
     // Calculate relative velocity
     glm::vec2 rv = B->m_velocity - A->m_velocity;
 
@@ -202,32 +205,66 @@ void NP_CollisionInfo::ApplyImpulse()
     glm::vec2 impulse = j * normal;
     A->m_velocity -= (1 / A->m_mass) * impulse;
     B->m_velocity += (1 / B->m_mass) * impulse;
+    
 
     
-    //for (size_t i = 0; i < contact_count; ++i)
-    //{
-    //    // Calculate radii from COM to contact
-    //    glm::vec2 ra = contactPoints[i] - m_aBody->m_position;
-    //    glm::vec2 rb = contactPoints[i] - m_bBody->m_position;
+    /*
+    // Work in progress
 
-    //    glm::vec2 rv = m_bBody->m_velocity + Cross(m_bBody->m_angularVelocity, rb) -
-    //        m_aBody->m_velocity + Cross(m_aBody->m_angularVelocity, ra);
+    for (size_t i = 0; i < contact_count; ++i)
+    {
+        // Calculate radii from COM to contact for both bodies
+        glm::vec2 ra = contactPoints[i] - A->m_position;
+        glm::vec2 rb = contactPoints[i] - B->m_position;
 
-    //    //Relative velocity along the normal
-    //    float contactVel = Dot(rv, normal);
+        // Calculate relative velocity
+        glm::vec2 rv = B->m_velocity + Cross(B->m_angularVelocity, rb) -
+            A->m_velocity + Cross(A->m_angularVelocity, ra);
 
-    //    //Do not resolve if velocities are seperating
-    //    if (contactVel > 0)
-    //        return;
+        //Relative velocity along the normal
+        float contactVel = Dot(rv, normal);
 
-    //    float raCrossN = Cross(ra, normal);
-    //    float rbCrossN = Cross(ra, normal);
-    //    
+        //Do not resolve if velocities are separating
+        if (contactVel > 0)
+            return;
+
+        // Cross products for relative velocities and the contact normal
+        float raCrossN = Cross(ra, normal);
+        float rbCrossN = Cross(ra, normal);
+        
         //real invMassSum = A->im + B->im + Sqr( raCrossN ) * A->iI + Sqr( rbCrossN ) * B->iI;
-        //float invMassSum = m_aBody->inverseMass + m_bBody->inverseMass
+        float invMassSum = A->inverseMass + B->inverseMass;
 
- 
-    //}
+        // Calculate impulse scalar
+        float iScalar = -(1.0f + e) * contactVel;
+        iScalar /= invMassSum;
+        iScalar /= (float)contact_count;
+
+        // Apply impulse
+        glm::vec2 impulse = normal * iScalar;
+        //A->m_velocity -= (1 / A->m_mass) * impulse;
+        //B->m_velocity += (1 / B->m_mass) * impulse;
+        A->addImpulse(-impulse, ra);
+        B->addImpulse(impulse, rb);
+
+
+        // Friction impulse
+        glm::vec2 tangent = rv - (normal * Dot(rv, normal));
+        glm::normalize(tangent);
+
+        float jt = -Dot(rv, tangent);
+        jt /= invMassSum;
+        jt /= (float)contact_count;
+
+        // COULUMBIN LAKI?
+        
+        glm::vec2 tangentImpulse = tangent * -iScalar;
+
+        A->addImpulse(-tangentImpulse, ra);
+        B->addImpulse(tangentImpulse, rb);
+     }
+    */
+    
 }
 
 bool NP_CollisionInfo::overlap(glm::vec2 projection1, glm::vec2 projection2)
@@ -248,7 +285,7 @@ float NP_CollisionInfo::getOverlap(glm::vec2 projection1, glm::vec2 projection2)
     }
     else
     {
-        //PROBLEM WITH OVERLAP
+        //IF WE GET HERE THERE IS PROBLEM WITH OVERLAP
     }
 }
 
@@ -272,6 +309,7 @@ void NP_CollisionInfo::calcContactPoints()
         }
     }
 
+    // Get closest corner and its neighboring corners
     glm::vec2 v = m_aBody->m_collider.corner[index];
     glm::vec2 v1 = m_aBody->m_collider.corner[index + 1];
     glm::vec2 v0 = m_aBody->m_collider.corner[index - 1];
@@ -281,7 +319,7 @@ void NP_CollisionInfo::calcContactPoints()
     // v0 to v
     glm::vec2 r = v - v0;
 
-    // normalize
+    // normalize left and right
     glm::normalize(l);
     glm::normalize(r);
 
@@ -308,6 +346,7 @@ void NP_CollisionInfo::calcContactPoints()
         }
     }
 
+    // Get closest corner and its neighboring corners for second edge
     v = m_bBody->m_collider.corner[index];
     v1 = m_bBody->m_collider.corner[index + 1];
     v0 = m_bBody->m_collider.corner[index - 1];
@@ -330,8 +369,12 @@ void NP_CollisionInfo::calcContactPoints()
         edge2 = l;
     }
 
+    // Reference and incident edges
     glm::vec2 ref, inc;
+
+    // Should we flip?
     bool flip = false;
+
     if (glm::abs(Dot(normal, edge) <= glm::abs(Dot(normal, edge2))))
     {
         ref = edge;
@@ -385,7 +428,7 @@ void NP_CollisionInfo::calcContactPoints()
     }
     if (Dot(refNorm, contactPoints[1]) - max < 0.0f && !contactPoints.empty())
     {
-        contactPoints.erase(contactPoints.end() - 1); // might be wrong???
+        contactPoints.erase(contactPoints.end() - 1); // might be wrong?
     }
 }
 
