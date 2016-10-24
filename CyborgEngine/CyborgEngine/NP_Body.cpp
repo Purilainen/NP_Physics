@@ -91,13 +91,13 @@ void NP_Body::addImpulse(glm::vec2 impulse, glm::vec2 contactVector)
     m_angularVelocity += inverseInertia * Cross(contactVector, impulse);
 }
 
-NP_Body::NP_Body(NP_World world) : Static(false), Kinematic(false), Dynamic(true), m_world(&world), m_velocity(0), m_position(0), m_restitution(0.2f)
+NP_Body::NP_Body(NP_World world, float mass) : Static(false), Kinematic(false), Dynamic(true), m_world(&world), m_velocity(0), m_position(0), m_restitution(0.2f), m_mass(mass)
 {
     //Bodies are dynamic by default
-    inverseMass = 1 / m_mass;
-    float halfSize = 0.25f;
+    inverseMass = 1 / mass;
+    float halfSize = 0.5f;
 
-    inverseInertia = 1.0f / (m_mass * (halfSize * halfSize + halfSize * halfSize));
+    inverseInertia = 1.0f / (mass * (halfSize * halfSize + halfSize * halfSize));
 }
 
 NP_Body::~NP_Body()

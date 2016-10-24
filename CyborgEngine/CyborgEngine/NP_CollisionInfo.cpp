@@ -244,7 +244,7 @@ void NP_CollisionInfo::ApplyImpulse()
 
 
 
-        float halfSize = 0.25f;
+        float halfSize = 0.5f;
         float aI = 1.0f /  (A->m_mass * (halfSize * halfSize + halfSize * halfSize));
         float bI = 1.0f /  (B->m_mass * (halfSize * halfSize + halfSize * halfSize));
 
@@ -328,7 +328,7 @@ void NP_CollisionInfo::calcContactPoints()
     glm::vec2 edge;
 
 
-    for (int i = 4; i > 0; --i)
+    for (int i = 0; i < 4; ++i)
     {        
         float max = -FLT_MAX;
         float projection = Dot(normal, m_aBody->m_collider.corner[i]);
@@ -341,8 +341,8 @@ void NP_CollisionInfo::calcContactPoints()
 
     // Get closest corner and its neighboring corners
     glm::vec2 v = m_aBody->m_collider.corner[index];
-    glm::vec2 v1 = m_aBody->m_collider.corner[index - 1];
-    glm::vec2 v0 = m_aBody->m_collider.corner[index + 1];
+    glm::vec2 v1 = m_aBody->m_collider.corner[index + 1];
+    glm::vec2 v0 = m_aBody->m_collider.corner[index - 1];
 
     // v1 to v0
     glm::vec2 l = v - v1;
@@ -365,7 +365,7 @@ void NP_CollisionInfo::calcContactPoints()
     index = 0;
     glm::vec2 edge2;
 
-    for (int i = 4; i > 0; --i)
+    for (int i = 0; i < 4; ++i)
     {
         float max = -FLT_MAX;
         float projection = Dot(normal, m_bBody->m_collider.corner[i]);
@@ -378,8 +378,8 @@ void NP_CollisionInfo::calcContactPoints()
 
     // Get closest corner and its neighboring corners for second edge
     v = m_bBody->m_collider.corner[index];
-    v1 = m_bBody->m_collider.corner[index - 1];
-    v0 = m_bBody->m_collider.corner[index + 1];
+    v1 = m_bBody->m_collider.corner[index + 1];
+    v0 = m_bBody->m_collider.corner[index - 1];
 
     // v1 to v0
     l = v - v1;
@@ -412,16 +412,16 @@ void NP_CollisionInfo::calcContactPoints()
         ref = edge;
         inc = edge2;
         v = m_aBody->m_collider.corner[index];
-        v1 = m_aBody->m_collider.corner[index - 1];
-        v0 = m_aBody->m_collider.corner[index + 1];
+        v1 = m_aBody->m_collider.corner[index + 1];
+        v0 = m_aBody->m_collider.corner[index - 1];
     }
     else
     {
         ref = edge2;
         inc = edge;
         v = m_bBody->m_collider.corner[index];
-        v1 = m_bBody->m_collider.corner[index - 1];
-        v0 = m_bBody->m_collider.corner[index + 1];
+        v1 = m_bBody->m_collider.corner[index + 1];
+        v0 = m_bBody->m_collider.corner[index - 1];
         flip = true;
     }
 
@@ -474,20 +474,20 @@ void NP_CollisionInfo::clip(glm::vec2 v1, glm::vec2 v0, glm::vec2 n, float offse
     
     if (d1 >= 0.0f)
     {
-        for (int i = 0; i < contactPoints.size(); ++i)
+        /*for (int i = 0; i < contactPoints.size(); ++i)
         {
             if (contactPoints[i] == v1)
                 return;
-        }
+        }*/
         contactPoints.emplace_back(v1);
     }
     if (d2 >= 0.0f)
     {
-        for (int i = 0; i < contactPoints.size(); ++i)
+        /*for (int i = 0; i < contactPoints.size(); ++i)
         {
-            if (contactPoints[i] == v0)
-                return;
-        }
+        if (contactPoints[i] == v0)
+        return;
+        }*/
         contactPoints.emplace_back(v0);
     }
         

@@ -53,25 +53,11 @@ void NP_World::update(float deltaTime)
     for (size_t i = 0; i < contacts.size(); ++i)
     {
         contacts[i].ApplyImpulse();
-
-        std::vector<glm::vec2> temp = contacts[i].getContactPoints();
-        for (size_t j = 0; j < temp.size(); ++j)
-        {
-			// Draws circle to the contact point
-            //if (temp.size() >= 2)
-                Renderer::drawCircle(temp[j].x, temp[j].y, 0.05f);
-			
-            //std::cout << temp[j].x << " , " << temp[j].y << std::endl;
-        }
     }
 
     // Integrate velocities
     for (size_t i = 0; i < m_objects.size(); ++i)
         integrateVelocity(m_objects[i], deltaTime);
-
-
-    for (size_t i = 0; i < m_objects.size(); ++i)
-        updateOrientation(m_objects[i]);
 
     for (size_t i = 0; i < m_objects.size(); ++i)
     {

@@ -98,7 +98,7 @@ public:
     void addForce(float forceX, float forceY);
     void addImpulse(glm::vec2 impulse, glm::vec2 contactVector);
 
-	NP_Body(NP_World world);
+	NP_Body(NP_World world, float mass);
 	~NP_Body();
 
     Collider m_collider;
