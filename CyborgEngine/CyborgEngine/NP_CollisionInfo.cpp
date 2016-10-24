@@ -182,7 +182,7 @@ void NP_CollisionInfo::ApplyImpulse()
     NP_Body* A = m_aBody;
     NP_Body* B = m_bBody;
 
-    
+    /*
     //KARVALAKKIMALLI
     // Calculate relative velocity
     glm::vec2 rv = B->m_velocity - A->m_velocity;
@@ -205,15 +205,16 @@ void NP_CollisionInfo::ApplyImpulse()
     glm::vec2 impulse = j * normal;
     A->m_velocity -= (1 / A->m_mass) * impulse;
     B->m_velocity += (1 / B->m_mass) * impulse;
-    
+    */
 
     
-    /*
+    
     // Work in progress
 
     for (size_t i = 0; i < contact_count; ++i)
     {
-        // Calculate radii from COM to contact for both bodies
+        e = 0.2f;
+        // Calculate radii from center of mass to contact for both bodies
         glm::vec2 ra = contactPoints[i] - A->m_position;
         glm::vec2 rb = contactPoints[i] - B->m_position;
 
@@ -232,8 +233,25 @@ void NP_CollisionInfo::ApplyImpulse()
         float raCrossN = Cross(ra, normal);
         float rbCrossN = Cross(ra, normal);
         
+        if (raCrossN < 0)
+        {
+            raCrossN = raCrossN * -1.f;
+        }
+        if (rbCrossN < 0)
+        {
+            rbCrossN = rbCrossN * -1.f;
+        }
+
+
+
+        float halfSize = 0.25f;
+        float aI = 1.0f /  (A->m_mass * (halfSize * halfSize + halfSize * halfSize));
+        float bI = 1.0f /  (B->m_mass * (halfSize * halfSize + halfSize * halfSize));
+
         //real invMassSum = A->im + B->im + Sqr( raCrossN ) * A->iI + Sqr( rbCrossN ) * B->iI;
-        float invMassSum = A->inverseMass + B->inverseMass;
+        //float invMassSum = A->inverseMass + B->inverseMass;
+        float invMassSum = A->inverseMass + B->inverseMass + glm::sqrt(raCrossN) * aI + glm::sqrt(rbCrossN) * bI;
+        //invMassSum = invMassSum * -1.f;
 
         // Calculate impulse scalar
         float iScalar = -(1.0f + e) * contactVel;
@@ -257,13 +275,24 @@ void NP_CollisionInfo::ApplyImpulse()
         jt /= (float)contact_count;
 
         // COULUMBIN LAKI?
-        
-        glm::vec2 tangentImpulse = tangent * -iScalar;
+        glm::vec2 tangentImpulse;
+
+        if (std::abs(jt) < iScalar * 0.25f)
+            tangentImpulse = tangent * jt;
+        else
+            tangentImpulse = tangent * -iScalar * 0.15f;
+
+        //glm::vec2 tangentImpulse = tangent * -iScalar;
+
+        //if (tangentImpulse.x < 0)
+        //    tangentImpulse.x = tangentImpulse.x * -1.f;
+        //if (tangentImpulse.y < 0)
+        //    tangentImpulse.y = tangentImpulse.y * -1.f;
 
         A->addImpulse(-tangentImpulse, ra);
         B->addImpulse(tangentImpulse, rb);
      }
-    */
+    
     
 }
 
@@ -298,7 +327,8 @@ void NP_CollisionInfo::calcContactPoints()
     index = 0;
     glm::vec2 edge;
 
-    for (int i = 0; i < 4; ++i)
+
+    for (int i = 4; i > 0; --i)
     {        
         float max = -FLT_MAX;
         float projection = Dot(normal, m_aBody->m_collider.corner[i]);
@@ -311,8 +341,8 @@ void NP_CollisionInfo::calcContactPoints()
 
     // Get closest corner and its neighboring corners
     glm::vec2 v = m_aBody->m_collider.corner[index];
-    glm::vec2 v1 = m_aBody->m_collider.corner[index + 1];
-    glm::vec2 v0 = m_aBody->m_collider.corner[index - 1];
+    glm::vec2 v1 = m_aBody->m_collider.corner[index - 1];
+    glm::vec2 v0 = m_aBody->m_collider.corner[index + 1];
 
     // v1 to v0
     glm::vec2 l = v - v1;
@@ -335,7 +365,7 @@ void NP_CollisionInfo::calcContactPoints()
     index = 0;
     glm::vec2 edge2;
 
-    for (int i = 0; i < 4; ++i)
+    for (int i = 4; i > 0; --i)
     {
         float max = -FLT_MAX;
         float projection = Dot(normal, m_bBody->m_collider.corner[i]);
@@ -348,8 +378,8 @@ void NP_CollisionInfo::calcContactPoints()
 
     // Get closest corner and its neighboring corners for second edge
     v = m_bBody->m_collider.corner[index];
-    v1 = m_bBody->m_collider.corner[index + 1];
-    v0 = m_bBody->m_collider.corner[index - 1];
+    v1 = m_bBody->m_collider.corner[index - 1];
+    v0 = m_bBody->m_collider.corner[index + 1];
 
     // v1 to v0
     l = v - v1;
@@ -369,6 +399,8 @@ void NP_CollisionInfo::calcContactPoints()
         edge2 = l;
     }
 
+
+
     // Reference and incident edges
     glm::vec2 ref, inc;
 
@@ -380,16 +412,16 @@ void NP_CollisionInfo::calcContactPoints()
         ref = edge;
         inc = edge2;
         v = m_aBody->m_collider.corner[index];
-        v1 = m_aBody->m_collider.corner[index + 1];
-        v0 = m_aBody->m_collider.corner[index - 1];
+        v1 = m_aBody->m_collider.corner[index - 1];
+        v0 = m_aBody->m_collider.corner[index + 1];
     }
     else
     {
         ref = edge2;
         inc = edge;
         v = m_bBody->m_collider.corner[index];
-        v1 = m_bBody->m_collider.corner[index + 1];
-        v0 = m_bBody->m_collider.corner[index - 1];
+        v1 = m_bBody->m_collider.corner[index - 1];
+        v0 = m_bBody->m_collider.corner[index + 1];
         flip = true;
     }
 
@@ -428,21 +460,37 @@ void NP_CollisionInfo::calcContactPoints()
     }
     if (Dot(refNorm, contactPoints[1]) - max < 0.0f && !contactPoints.empty())
     {
-        contactPoints.erase(contactPoints.end() - 1); // might be wrong?
+        contactPoints.erase(contactPoints.begin() + 1); // might be wrong?
+        //contactPoints.erase(contactPoints.end() - 1);
     }
 }
 
 void NP_CollisionInfo::clip(glm::vec2 v1, glm::vec2 v0, glm::vec2 n, float offset)
 {
+
+    float d1 = Dot(n, v0) - offset;
+    float d2 = Dot(n, v1) - offset;
+
     
-
-    float d1 = Dot(n, v1) - offset;
-    float d2 = Dot(n, v0) - offset;
-
     if (d1 >= 0.0f)
+    {
+        for (int i = 0; i < contactPoints.size(); ++i)
+        {
+            if (contactPoints[i] == v1)
+                return;
+        }
         contactPoints.emplace_back(v1);
+    }
     if (d2 >= 0.0f)
+    {
+        for (int i = 0; i < contactPoints.size(); ++i)
+        {
+            if (contactPoints[i] == v0)
+                return;
+        }
         contactPoints.emplace_back(v0);
+    }
+        
 
     if (d1 * d2 < 0.0f)
     {
@@ -451,6 +499,12 @@ void NP_CollisionInfo::clip(glm::vec2 v1, glm::vec2 v0, glm::vec2 n, float offse
         float u = d1 / (d1 - d2);
         e = e * u;
         e = e + v1;
+
+        for (int i = 0; i < contactPoints.size(); ++i)
+        {
+            if (contactPoints[i] == e)
+                return;
+        }
 
         contactPoints.emplace_back(e);
     }

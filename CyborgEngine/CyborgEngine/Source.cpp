@@ -107,6 +107,8 @@ int main()
     // Creating bodies to the world
     NP_Body testBody(world), testBody2(world), testBody3(world);
 
+    //testBody3.m_mass = 10.f;
+
     // Binding objects to bodies
     testObj.bindBody(&testBody);
     testObj2.bindBody(&testBody2);
@@ -160,9 +162,9 @@ int main()
     testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
     //testObj.getBody()->m_orientation = glm::radians(30.f);
     //testObj3.getBody()->m_orientation = glm::radians(-45.f);
-    testObj3.getBody()->m_angularVelocity = 3.f;
-    testObj2.getBody()->m_angularVelocity = 2.5f;
-    testObj.getBody()->m_angularVelocity = -2.f;
+    testObj3.getBody()->m_angularVelocity = 10.0f;
+    //testObj2.getBody()->m_angularVelocity = 2.5f;
+    //testObj.getBody()->m_angularVelocity = -2.f;
 
     //INITIALIZATION FOR NP_PHYSICS STUFF -------------------------------------------------------------------- END
 

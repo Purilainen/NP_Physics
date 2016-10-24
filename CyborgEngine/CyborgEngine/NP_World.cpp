@@ -57,8 +57,9 @@ void NP_World::update(float deltaTime)
         std::vector<glm::vec2> temp = contacts[i].getContactPoints();
         for (size_t j = 0; j < temp.size(); ++j)
         {
-			// Draws circle to the contact point.
-            Renderer::drawCircle(temp[j].x, temp[j].y, 0.05f);
+			// Draws circle to the contact point
+            //if (temp.size() >= 2)
+                Renderer::drawCircle(temp[j].x, temp[j].y, 0.05f);
 			
             //std::cout << temp[j].x << " , " << temp[j].y << std::endl;
         }
@@ -67,6 +68,10 @@ void NP_World::update(float deltaTime)
     // Integrate velocities
     for (size_t i = 0; i < m_objects.size(); ++i)
         integrateVelocity(m_objects[i], deltaTime);
+
+
+    for (size_t i = 0; i < m_objects.size(); ++i)
+        updateOrientation(m_objects[i]);
 
     for (size_t i = 0; i < m_objects.size(); ++i)
     {
@@ -97,7 +102,7 @@ void NP_World::integrateForces(NP_Object* obj, float deltaTime)
     obj->getBody()->m_velocity += (obj->getBody()->m_force * obj->getBody()->inverseMass - gravity) * deltaTime;
 
     // angularVelocity += torque * inverseInertia * dt
-    obj->getBody()->m_angularVelocity += obj->getBody()->m_torque * deltaTime;
+    obj->getBody()->m_angularVelocity += obj->getBody()->m_torque * obj->getBody()->inverseInertia * deltaTime;
 }
 
 void NP_World::updateOrientation(NP_Object* obj)
