@@ -15,6 +15,7 @@ public:
 
     void update(float deltaTime);
     void addObject(NP_Object* obj) { m_objects.emplace_back(obj); }
+    void removeObjects(){ m_objects.clear(); }
 
     void integrateVelocity(NP_Object* obj, float deltaTime);
     void integrateForces(NP_Object* obj, float deltaTime);

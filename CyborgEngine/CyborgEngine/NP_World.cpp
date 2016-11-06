@@ -64,6 +64,7 @@ void NP_World::update(float deltaTime)
         m_objects[i]->getBody()->m_force = glm::vec2(0, 0);
         m_objects[i]->getBody()->m_torque = 0;
     }
+
 }
 
 void NP_World::integrateVelocity(NP_Object* obj, float deltaTime)
