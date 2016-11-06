@@ -105,7 +105,7 @@ int main()
     // Creating objects
     NP_Object testObj, testObj2, testObj3, testObj4, testObj5, testObj6;
     // Creating bodies to the world
-    NP_Body testBody(world, 1.f), testBody2(world, 1.f), testBody3(world, 1.f), testBody4(world, 0.5f), testBody5(world, 0.5f), testBody6(world, 100.f);
+    NP_Body testBody(world, 2.f), testBody2(world, 1.f), testBody3(world, 1.f), testBody4(world, 0.5f), testBody5(world, 0.5f), testBody6(world, 100.f);
 
     //testBody3.m_mass = 10.f;
     
@@ -174,17 +174,18 @@ int main()
     testObj2.getBody()->setPos(glm::vec2(0.0f, 0.75f));
     testObj.getBody()->setPos(glm::vec2(1.0f, 0.f));
 
-    testObj4.getBody()->setPos(glm::vec2(-0.35f, -0.2f));
-    testObj5.getBody()->setPos(glm::vec2(0.35f, -0.2f));
-    testObj6.getBody()->setPos(glm::vec2(0.0f, 1.f));
+    testObj4.getBody()->setPos(glm::vec2(-0.35f, 1.f));
+    testObj5.getBody()->setPos(glm::vec2(0.35f, 1.f));
+    testObj6.getBody()->setPos(glm::vec2(0.0f, -0.25f));
     
     testObj.getBody()->setVelocity(glm::vec2(-25.0f, 1.f));
 	testObj3.getBody()->setVelocity(glm::vec2(5.0f, 1.f));
     testObj2.getBody()->setVelocity(glm::vec2(0.f, -5.f));
 
-    testObj4.getBody()->setVelocity(glm::vec2(9.0f, 3.0f));
-    testObj5.getBody()->setVelocity(glm::vec2(-9.0f, 3.0f));
-    testObj6.getBody()->setVelocity(glm::vec2(0.f, -5.f));
+    testObj4.getBody()->setVelocity(glm::vec2(.0f, -3.0f));
+    testObj5.getBody()->setVelocity(glm::vec2(.0f, -3.0f));
+    testObj6.getBody()->setVelocity(glm::vec2(0.f, 2.f));
+
     //testObj.getBody()->m_orientation = glm::radians(30.f);
     //testObj3.getBody()->m_orientation = glm::radians(-45.f);
     //testObj3.getBody()->m_angularVelocity = 10.0f;
@@ -248,6 +249,7 @@ int main()
             Renderer::drawPolygon(&poly2, testObj2.getBody()->m_collider.position.x, testObj2.getBody()->m_collider.position.y);
             Renderer::drawPolygon(&poly3, testObj3.getBody()->m_collider.position.x, testObj3.getBody()->m_collider.position.y);
 
+            /*
             Renderer::drawCircle(testObj.getBody()->m_collider.corner[0].x, testObj.getBody()->m_collider.corner[0].y, 0.01f);
             Renderer::drawCircle(testObj.getBody()->m_collider.corner[1].x, testObj.getBody()->m_collider.corner[1].y, 0.01f);
             Renderer::drawCircle(testObj.getBody()->m_collider.corner[2].x, testObj.getBody()->m_collider.corner[2].y, 0.01f);
@@ -262,6 +264,7 @@ int main()
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[1].x, testObj2.getBody()->m_collider.corner[1].y, 0.01f);
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[2].x, testObj2.getBody()->m_collider.corner[2].y, 0.01f);
             Renderer::drawCircle(testObj2.getBody()->m_collider.corner[3].x, testObj2.getBody()->m_collider.corner[3].y, 0.01f);
+            */
             //std::cout << testObj.getBody()->m_collider.corner[0].x << std::endl;
 
 			//testObj.getBody()->setOrient(a);
@@ -272,10 +275,12 @@ int main()
         {
             Renderer::setColor(1, 0.5, 0.75, 0.5);
 
+            
+
             Renderer::drawPolygon(&poly4, testObj4.getBody()->m_collider.position.x, testObj4.getBody()->m_collider.position.y);
             Renderer::drawPolygon(&poly5, testObj5.getBody()->m_collider.position.x, testObj5.getBody()->m_collider.position.y);
             Renderer::drawPolygon(&poly6, testObj6.getBody()->m_collider.position.x, testObj6.getBody()->m_collider.position.y);
-
+            /*
             Renderer::drawCircle(testObj4.getBody()->m_collider.corner[0].x, testObj4.getBody()->m_collider.corner[0].y, 0.01f);
             Renderer::drawCircle(testObj4.getBody()->m_collider.corner[1].x, testObj4.getBody()->m_collider.corner[1].y, 0.01f);
             Renderer::drawCircle(testObj4.getBody()->m_collider.corner[2].x, testObj4.getBody()->m_collider.corner[2].y, 0.01f);
@@ -285,8 +290,9 @@ int main()
             Renderer::drawCircle(testObj5.getBody()->m_collider.corner[1].x, testObj5.getBody()->m_collider.corner[1].y, 0.01f);
             Renderer::drawCircle(testObj5.getBody()->m_collider.corner[2].x, testObj5.getBody()->m_collider.corner[2].y, 0.01f);
             Renderer::drawCircle(testObj5.getBody()->m_collider.corner[3].x, testObj5.getBody()->m_collider.corner[3].y, 0.01f);
-
+            */
             world.update(a / 5000);
+            
         }
 
 
